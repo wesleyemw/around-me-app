@@ -1,4 +1,7 @@
+@import "maplibre-gl/dist/maplibre-gl.css";
 #map {
-    height: 90vh;
+    height: 98vh;
     width: 100%;
+    margin: 0 auto;
+    font-family: 'Helvetica', sans-serif;
 }

@@ -1,6 +1,6 @@
 import * as esbuild from 'esbuild';
 
-await esbuild.build ({
+let ctx = await esbuild.context ({
     entryPoints: [
 		'./src/js/*.js',
 		'./src/css/*.css',
@@ -10,4 +10,11 @@ await esbuild.build ({
     bundle: true,
     write: true,
     sourcemap: true,
+})
+
+
+await ctx.watch();
+
+let { hosts, port } = await ctx.serve({
+  servedir: '/.',
 })
