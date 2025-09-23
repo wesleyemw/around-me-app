@@ -1,6 +1,6 @@
 {
   "name": "me-maplibre-project",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -18,5 +18,9 @@
   },
   "dependencies": {
     "maplibre-gl": "^5.7.0"
+  },
+  "engines": {
+    "npm": ">=10.0.0 <11.4.2",
+    "node": "22.16.0" 
   }
 }
