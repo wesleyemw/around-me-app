@@ -5,3 +5,8 @@
     margin: 0 auto;
     font-family: 'Helvetica', sans-serif;
 }
+
+#opacity-control {
+    background-color: plum;
+    border-radius: 2px;
+}
