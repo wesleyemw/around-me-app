@@ -1,6 +1,31 @@
 import maplibregl from 'maplibre-gl';
 import OpacityControl from 'maplibre-gl-opacity';
 
+// get current position
+const options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0,
+};
+
+function success(pos) {
+  const crd = pos.coords;
+
+//   console.log("Your current position is:");
+//   console.log(`Latitude : ${crd.latitude}`);
+//   console.log(`Longitude: ${crd.longitude}`);
+//   console.log(`More or less ${crd.accuracy} meters.`);
+  return [crd.longitude, crd.latitude];
+}
+
+function error(err) {
+  console.warn(`ERROR`);
+  // returns the geolocation of london
+  return [-0.118092, 51.509865];
+}
+
+const position = navigator.geolocation.getCurrentPosition(success, error, options);
+
 const map = new maplibregl.Map({
     container: 'map', // container id
     style: {
@@ -25,7 +50,7 @@ const map = new maplibregl.Map({
             },
         ],
     },
-    center: [-82.9833, 39.9833],
+    center: [-0.118092, 51.509865],
     zoom: 10,
 });
 
@@ -112,28 +137,16 @@ map.on('load', function () {
     // NavigationControl
     let nc = new maplibregl.NavigationControl();
     map.addControl(nc, 'top-left');
+
+    // Add geolocate control to the map.
+    map.addControl(
+        new maplibregl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        })
+    );
 });
 
 
-// get current position
-
-const options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0,
-};
-
-function success(pos) {
-  const crd = pos.coords;
-
-  console.log("Your current position is:");
-  console.log(`Latitude : ${crd.latitude}`);
-  console.log(`Longitude: ${crd.longitude}`);
-  console.log(`More or less ${crd.accuracy} meters.`);
-}
-
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-}
-
-navigator.geolocation.getCurrentPosition(success, error, options);
