@@ -123,6 +123,30 @@ map.on('load', function () {
             trackUserLocation: true
         })
     );
+
+    // reverse geocoding
+    fetch('https://photon.komoot.io/reverse?lon=-0.11&lat=51')
+        .then(res => res.json())
+        .then((geojson) => {
+            console.log(geojson);
+            map.addSource('reverse', {
+                type: 'geojson',
+                data: geojson
+            });
+
+            map.addLayer({
+                id: "reverse_points",
+                type: 'circle',
+                source: 'reverse',
+                paint: {
+                    'circle-radius': 4,
+                    'circle-stroke-width': 2,
+                    'circle-color': 'red',
+                    'circle-stroke-color': 'white'
+                }
+            });
+        })
+    
 });
 
 
