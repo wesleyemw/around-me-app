@@ -1,5 +1,6 @@
 import maplibregl from 'maplibre-gl';
 import OpacityControl from 'maplibre-gl-opacity';
+import { OverpassClient } from '@andreasnicolaou/overpass-client';
 
 const map = new maplibregl.Map({
     container: 'map', // container id
@@ -25,7 +26,7 @@ const map = new maplibregl.Map({
             },
         ],
     },
-    // london position
+    // london starting position
     center: [-0.118092, 51.509865],
     zoom: 10,
 });
@@ -125,28 +126,41 @@ map.on('load', function () {
     );
 
     // reverse geocoding
-    fetch('https://photon.komoot.io/reverse?lon=-0.11&lat=51')
-        .then(res => res.json())
-        .then((geojson) => {
-            console.log(geojson);
-            map.addSource('reverse', {
-                type: 'geojson',
-                data: geojson
-            });
+    // fetch('https://photon.komoot.io/reverse?lon=-0.11&lat=51')
+    //     .then(res => res.json())
+    //     .then((geojson) => {
+    //         console.log(geojson);
+    //         map.addSource('reverse', {
+    //             type: 'geojson',
+    //             data: geojson
+    //         });
 
-            map.addLayer({
-                id: "reverse_points",
-                type: 'circle',
-                source: 'reverse',
-                paint: {
-                    'circle-radius': 4,
-                    'circle-stroke-width': 2,
-                    'circle-color': 'red',
-                    'circle-stroke-color': 'white'
-                }
-            });
-        })
+    //         map.addLayer({
+    //             id: "reverse_points",
+    //             type: 'circle',
+    //             source: 'reverse',
+    //             paint: {
+    //                 'circle-radius': 4,
+    //                 'circle-stroke-width': 2,
+    //                 'circle-color': 'red',
+    //                 'circle-stroke-color': 'white'
+    //             }
+    //         });
+    //     })
+
+
     
 });
 
 
+const overpassClient = new OverpassClient(); 
+
+const tags = { amenity: ['cafe', 'restaurant'] };
+const lat = 51.509865;
+const lon = -0.118092;
+const radius = 500;
+const results = [];
+overpassClient.getElementsByRadius(tags, lat, lon, radius).subscribe((response) => {
+    results.push(response.elements);
+    console.log(results);
+});
