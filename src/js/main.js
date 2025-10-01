@@ -2,6 +2,11 @@ import maplibregl from 'maplibre-gl';
 import OpacityControl from 'maplibre-gl-opacity';
 import { OverpassClient } from '@andreasnicolaou/overpass-client';
 
+const coordinates = {
+    lon: -0.118092,
+    lat: 51.509865
+}
+
 const map = new maplibregl.Map({
     container: 'map', // container id
     style: {
@@ -27,11 +32,13 @@ const map = new maplibregl.Map({
         ],
     },
     // london starting position
-    center: [-0.118092, 51.509865],
+    center: [coordinates.lon, coordinates.lat],
     zoom: 10,
 });
 
 map.on('load', function () {
+
+    getAmenities(coordinates.lat, coordinates.lon);
     // MIERUNE Color
     map.addSource('m_color', {
         type: 'raster',
@@ -116,14 +123,18 @@ map.on('load', function () {
     map.addControl(nc, 'top-left');
 
     // Add geolocate control to the map.
-    map.addControl(
-        new maplibregl.GeolocateControl({
+    let locate = new maplibregl.GeolocateControl({
             positionOptions: {
                 enableHighAccuracy: true
             },
-            trackUserLocation: true
+            trackUserLocation: false
         })
-    );
+    map.addControl(locate);
+
+    locate.on('geolocate', (e)=> {
+        getAmenities(e.coords.latitude, e.coords.longitude)
+    })
+
 
     // reverse geocoding
     // fetch('https://photon.komoot.io/reverse?lon=-0.11&lat=51')
@@ -153,14 +164,15 @@ map.on('load', function () {
 });
 
 
-const overpassClient = new OverpassClient(); 
+function getAmenities(lat, lon) {
+    const overpassClient = new OverpassClient(); 
+    const tags = { 
+        amenity: ['restaurant', 'cafe']
+     };
+    const radius = 500;
+    overpassClient.getElementsByRadius(tags, lat, lon, radius).subscribe((response) => {
+        console.log(response.elements);
+    });
+}   
 
-const tags = { amenity: ['cafe', 'restaurant'] };
-const lat = 51.509865;
-const lon = -0.118092;
-const radius = 500;
-const results = [];
-overpassClient.getElementsByRadius(tags, lat, lon, radius).subscribe((response) => {
-    results.push(response.elements);
-    console.log(results);
-});
+
