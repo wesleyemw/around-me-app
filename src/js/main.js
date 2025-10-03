@@ -1,11 +1,13 @@
 import maplibregl from 'maplibre-gl';
 import OpacityControl from 'maplibre-gl-opacity';
 import { OverpassClient } from '@andreasnicolaou/overpass-client';
+import { toFeature } from './utils';
 
-const coordinates = {
+const initialPosition = {
     lon: -0.118092,
     lat: 51.509865
 }
+
 
 const map = new maplibregl.Map({
     container: 'map', // container id
@@ -32,13 +34,13 @@ const map = new maplibregl.Map({
         ],
     },
     // london starting position
-    center: [coordinates.lon, coordinates.lat],
+    center: [initialPosition.lon, initialPosition.lat],
     zoom: 10,
 });
 
-map.on('load', function () {
+map.on('load', async function () {
 
-    getAmenities(coordinates.lat, coordinates.lon);
+    // getAmenities(initialPosition.lat, initialPosition.lon);
     // MIERUNE Color
     map.addSource('m_color', {
         type: 'raster',
@@ -132,8 +134,10 @@ map.on('load', function () {
     map.addControl(locate);
 
     locate.on('geolocate', (e)=> {
-        getAmenities(e.coords.latitude, e.coords.longitude)
-    })
+       getAmenities(e.coords.latitude, e.coords.longitude); 
+    });
+
+    console.log(map.getBounds().toArray());
 
 
     // reverse geocoding
@@ -166,13 +170,40 @@ map.on('load', function () {
 
 function getAmenities(lat, lon) {
     const overpassClient = new OverpassClient(); 
-    const tags = { 
-        amenity: ['restaurant', 'cafe']
-     };
-    const radius = 500;
+    const tags = { amenity: ['cafe', 'restaurant'] }
+    const radius = 1000;
     overpassClient.getElementsByRadius(tags, lat, lon, radius).subscribe((response) => {
+        let items = [];
+        let geo = {};
+        geo['type'] = 'FeatureCollection';
+        geo['features'] = [];
         console.log(response.elements);
+
+        items.push( ...response.elements );    
+        items.forEach((item) => {
+            geo['features'].push(toFeature(item));
+        })
+        console.log(geo);
+        const geoJSONcontent = geo;
+        map.addSource('restaurants', {
+            'type': 'geojson',
+            'data': geoJSONcontent
+        });
+        map.addLayer({
+            'id': "reverse_points",
+            'type': 'circle',
+            'source': 'restaurants',
+            'paint': {
+                'circle-radius': 8,
+                'circle-stroke-width': 1,
+                'circle-color': 'red',
+                'circle-stroke-color': 'white',
+                'circle-opacity': 0.5
+            }
+        });
     });
 }   
+
+
 
 
