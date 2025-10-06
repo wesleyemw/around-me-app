@@ -11,49 +11,50 @@ const initialPosition = {
 
 const map = new maplibregl.Map({
     container: 'map', // container id
-    style: {
-        version: 8,
-        sources: {
-            o_std: {
-                type: 'raster',
-                tiles: [
-                    'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                ],
-                tileSize: 256,
-            },
-        },
-        layers: [
-            {
-                id: 'o_std',
-                type: 'raster',
-                source: 'o_std',
-                minzoom: 0,
-                maxzoom: 18,
-            },
-        ],
-    },
+    style: 'https://tiles.openfreemap.org/styles/bright',
+    // style: {
+    //     version: 8,
+    //     sources: {
+    //         o_std: {
+    //             type: 'raster',
+    //             tiles: [
+    //                 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    //                 'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    //             ],
+    //             tileSize: 256,
+    //         },
+    //     },
+    //     layers: [
+    //         {
+    //             id: 'o_std',
+    //             type: 'raster',
+    //             source: 'o_std',
+    //             minzoom: 0,
+    //             maxzoom: 18,
+    //         },
+    //     ],
+    // },
     // london starting position
     center: [initialPosition.lon, initialPosition.lat],
-    zoom: 10,
+    zoom: 12,
 });
 
 map.on('load', async function () {
 
     // getAmenities(initialPosition.lat, initialPosition.lon);
     // MIERUNE Color
-    map.addSource('m_color', {
-        type: 'raster',
-        tiles: ['https://tile.mierune.co.jp/mierune/{z}/{x}/{y}.png'],
-        tileSize: 256,
-    });
-    map.addLayer({
-        id: 'm_color',
-        type: 'raster',
-        source: 'm_color',
-        minzoom: 0,
-        maxzoom: 18,
-    });
+    // map.addSource('m_color', {
+    //     type: 'raster',
+    //     tiles: ['https://tile.mierune.co.jp/mierune/{z}/{x}/{y}.png'],
+    //     tileSize: 256,
+    // });
+    // map.addLayer({
+    //     id: 'm_color',
+    //     type: 'raster',
+    //     source: 'm_color',
+    //     minzoom: 0,
+    //     maxzoom: 18,
+    // });
 
     // OpenStreetMap
     // map.addSource('o_std', {
@@ -101,10 +102,10 @@ map.on('load', async function () {
     });
 
     // BaseLayer
-    const mapBaseLayer = {
-        o_std: 'Open Street Maps',
-        m_color: 'MIERUNE Color',
-    };
+    // const mapBaseLayer = {
+    //     o_std: 'Open Street Maps',
+    //     m_color: 'MIERUNE Color',
+    // };
 
     // OverLayer
     const mapOverLayer = {
@@ -114,7 +115,7 @@ map.on('load', async function () {
 
     // OpacityControl
     let Opacity = new OpacityControl({
-        baseLayers: mapBaseLayer,
+        // baseLayers: mapBaseLayer,
         overLayers: mapOverLayer,
         opacityControl: true,
     });
@@ -138,39 +139,13 @@ map.on('load', async function () {
     });
 
     console.log(map.getBounds().toArray());
-
-
-    // reverse geocoding
-    // fetch('https://photon.komoot.io/reverse?lon=-0.11&lat=51')
-    //     .then(res => res.json())
-    //     .then((geojson) => {
-    //         console.log(geojson);
-    //         map.addSource('reverse', {
-    //             type: 'geojson',
-    //             data: geojson
-    //         });
-
-    //         map.addLayer({
-    //             id: "reverse_points",
-    //             type: 'circle',
-    //             source: 'reverse',
-    //             paint: {
-    //                 'circle-radius': 4,
-    //                 'circle-stroke-width': 2,
-    //                 'circle-color': 'red',
-    //                 'circle-stroke-color': 'white'
-    //             }
-    //         });
-    //     })
-
-
     
 });
 
 
 function getAmenities(lat, lon) {
     const overpassClient = new OverpassClient(); 
-    const tags = { amenity: ['cafe', 'restaurant'] }
+    const tags = { amenity: ['restaurant'] }
     const radius = 1000;
     overpassClient.getElementsByRadius(tags, lat, lon, radius).subscribe((response) => {
         let items = [];
@@ -193,8 +168,9 @@ function getAmenities(lat, lon) {
             'id': "reverse_points",
             'type': 'circle',
             'source': 'restaurants',
+            'minzoom': 12,
             'paint': {
-                'circle-radius': 8,
+                'circle-radius': 12,
                 'circle-stroke-width': 1,
                 'circle-color': 'red',
                 'circle-stroke-color': 'white',
