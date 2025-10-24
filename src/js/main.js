@@ -135,11 +135,26 @@ map.on('load', async function () {
     map.addControl(locate);
 
     locate.on('geolocate', (e)=> {
-       getAmenities(e.coords.latitude, e.coords.longitude); 
-    });
+        getAmenities(e.coords.latitude, e.coords.longitude);
+    }); 
 
-    console.log(map.getBounds().toArray());
-    
+    // get data by bounding box 
+    let bbox = map.getBounds();
+    console.log(bbox);
+    // [minLat, minLon, maxLat, maxLon]
+    let points = {
+        minLat: bbox._sw.lat,
+        minLon: bbox._sw.lng,
+        maxLat: bbox._ne.lat,
+        maxLon: bbox._ne.lng
+    }
+    // console.log(points);
+    const tags = { amenity: ['cafe', 'restaurant'] };
+    const overpassClient = new OverpassClient(); 
+    const box = [points.minLat, points.minLon, points.maxLat, points.maxLon]; // [minLat, minLon, maxLat, maxLon]
+    overpassClient.getElementsByBoundingBox(tags, box).subscribe((response) => {
+        console.log(response);
+    });
 });
 
 
