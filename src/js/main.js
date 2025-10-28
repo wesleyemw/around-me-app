@@ -123,7 +123,7 @@ map.on('load', async function () {
 
     // NavigationControl
     let nc = new maplibregl.NavigationControl();
-    map.addControl(nc, 'top-left');
+    map.addControl(nc, 'top-right');
 
     // Add geolocate control to the map.
     let locate = new maplibregl.GeolocateControl({
@@ -132,7 +132,7 @@ map.on('load', async function () {
             },
             trackUserLocation: false
         })
-    map.addControl(locate);
+    map.addControl(locate, 'top-right');
 
     locate.on('geolocate', (e)=> {
         getAmenities(e.coords.latitude, e.coords.longitude);
