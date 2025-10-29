@@ -193,7 +193,50 @@ function getAmenities(lat, lon) {
             }
         });
     });
-}   
+}
+
+
+const food = [
+            'amenity=bar',
+            'amenity=cafe',
+            'amenity=fast_food',
+            'amenity=food_court',
+            'amenity=ice_cream',
+            'amenity=restaurant',
+            'shop=bakery',
+            'shop=pastry',
+            'shop=confectionery',
+            'shop=chocolate',
+             'shop=supermarket',
+              'shop=convenience' ,
+               'shop=greengrocer' 
+    ];
+        const transport = [
+            'amenity=bicycle_parking',
+            'amenity=bus_station',
+            'amenity=ferry_terminal',
+            'amenity=taxi',
+            'railway=station',
+            'aerialway=station'
+    ];
+        const utils = [
+            'shop=storage_rental',
+            'shop=tailor' 
+    ]
+    
+    function tagsToObjects(arr) {
+        const allObjs = [];
+        for (item of arr) {
+            const itemExploded = item.split('=');
+            const result = {}
+            result[`${itemExploded[0]}`] = [ itemExploded[1]];
+            allObjs.push(result);
+        }
+        return allObjs;
+    }
+    const foodObjects = tagsToObjects(food);
+    const transportObjects = tagsToObjects(transport);
+    const utilsObjects = tagsToObjects(utils);
 
 
 
