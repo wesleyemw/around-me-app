@@ -2,6 +2,7 @@ import maplibregl from 'maplibre-gl';
 import OpacityControl from 'maplibre-gl-opacity';
 import { OverpassClient } from '@andreasnicolaou/overpass-client';
 import { toFeature } from './utils';
+import { food, transport, utils } from './definitions';
 
 const initialPosition = {
     lon: -0.118092,
@@ -134,13 +135,13 @@ map.on('load', async function () {
         })
     map.addControl(locate, 'top-right');
 
-    locate.on('geolocate', (e)=> {
-        getAmenities(e.coords.latitude, e.coords.longitude);
-    }); 
+    // locate.on('geolocate', (e)=> {
+    //     getAmenities(e.coords.latitude, e.coords.longitude);
+    // }); 
 
     // get data by bounding box 
     let bbox = map.getBounds();
-    console.log(bbox);
+    //console.log(bbox);
     // [minLat, minLon, maxLat, maxLon]
     let points = {
         minLat: bbox._sw.lat,
@@ -157,8 +158,30 @@ map.on('load', async function () {
     });
 });
 
+function delay(ms) {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms);
+    }) 
+}
 
-function getAmenities(lat, lon) {
+function getAmenitiesByBbox(tagsObj) {
+    let bbox = map.getBounds();
+    let points = {
+        minLat: bbox._sw.lat,
+        minLon: bbox._sw.lng,
+        maxLat: bbox._ne.lat,
+        maxLon: bbox._ne.lng
+    }
+    const tags = tagsObj;
+    const overpassClient = new OverpassClient(); 
+    const box = [points.minLat, points.minLon, points.maxLat, points.maxLon]; // [minLat, minLon, maxLat, maxLon]
+    overpassClient.getElementsByBoundingBox(tags, box).subscribe((response) => {
+        console.log(response);
+    });
+}
+
+
+function getAmenitiesByRadius(lat, lon) {
     const overpassClient = new OverpassClient(); 
     const tags = { amenity: ['restaurant'] }
     const radius = 1000;
@@ -195,49 +218,34 @@ function getAmenities(lat, lon) {
     });
 }
 
-
-const food = [
-            'amenity=bar',
-            'amenity=cafe',
-            'amenity=fast_food',
-            'amenity=food_court',
-            'amenity=ice_cream',
-            'amenity=restaurant',
-            'shop=bakery',
-            'shop=pastry',
-            'shop=confectionery',
-            'shop=chocolate',
-             'shop=supermarket',
-              'shop=convenience' ,
-               'shop=greengrocer' 
-    ];
-        const transport = [
-            'amenity=bicycle_parking',
-            'amenity=bus_station',
-            'amenity=ferry_terminal',
-            'amenity=taxi',
-            'railway=station',
-            'aerialway=station'
-    ];
-        const utils = [
-            'shop=storage_rental',
-            'shop=tailor' 
-    ]
     
-    function tagsToObjects(arr) {
-        const allObjs = [];
-        for (item of arr) {
-            const itemExploded = item.split('=');
-            const result = {}
-            result[`${itemExploded[0]}`] = [ itemExploded[1]];
-            allObjs.push(result);
-        }
-        return allObjs;
+function tagsToObjects(arr) {
+    const allObjs = [];
+    for (const item of arr) {
+        const itemExploded = item.split('=');
+        const result = {}
+        result[`${itemExploded[0]}`] = [ itemExploded[1]];
+        allObjs.push(result);
     }
-    const foodObjects = tagsToObjects(food);
-    const transportObjects = tagsToObjects(transport);
-    const utilsObjects = tagsToObjects(utils);
+    return allObjs;
+}
+// const foodObjects = tagsToObjects(food);
+// const transportObjects = tagsToObjects(transport);
+// const utilsObjects = tagsToObjects(utils);
 
 
 
+const featuresForm = document.querySelector('form.features');
 
+featuresForm.addEventListener('change', (e)=> {
+    if (!e.target.checked) return;
+    const featureType = e.target.getAttribute('name');
+    if (featureType == 'food') {
+        const foodObjects = tagsToObjects(food);
+        for (const item of foodObjects) {
+            
+            const featureName = Object.values(item)[0][0];
+            console.log(featureName, item)
+        }
+    }
+})
