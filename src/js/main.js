@@ -2,7 +2,7 @@ import maplibregl from "maplibre-gl";
 import OpacityControl from "maplibre-gl-opacity";
 import { OverpassClient } from "@andreasnicolaou/overpass-client";
 import { toFeature } from "./utils";
-import * as definitions from "./definitions";
+import definitions from "./definitions";
 
 const initialPosition = {
 	lon: -0.118092,
@@ -152,7 +152,7 @@ map.on("load", async function () {
 	const overpassClient = new OverpassClient();
 	const box = [points.minLat, points.minLon, points.maxLat, points.maxLon]; // [minLat, minLon, maxLat, maxLon]
 	overpassClient.getElementsByBoundingBox(tags, box).subscribe((response) => {
-		console.log(response);
+		// console.log(response);
 	});
 });
 
@@ -162,7 +162,7 @@ function delay(ms) {
 	});
 }
 
-function getAmenitiesByBbox(tagsObj) {
+async function getAmenitiesByBbox(tagsObj) {
 	let bbox = map.getBounds();
 	let points = {
 		minLat: bbox._sw.lat,
@@ -173,9 +173,12 @@ function getAmenitiesByBbox(tagsObj) {
 	const tags = tagsObj;
 	const overpassClient = new OverpassClient();
 	const box = [points.minLat, points.minLon, points.maxLat, points.maxLon]; // [minLat, minLon, maxLat, maxLon]
-	overpassClient.getElementsByBoundingBox(tags, box).subscribe((response) => {
-		console.log(response);
-	});
+	const elements = ["node"];
+	overpassClient
+		.getElementsByBoundingBox(tags, box, elements)
+		.subscribe((response) => {
+			console.log(response);
+		});
 }
 
 function getAmenitiesByRadius(lat, lon) {
@@ -217,7 +220,7 @@ function getAmenitiesByRadius(lat, lon) {
 		});
 }
 
-function tagsToObjects(...arr) {
+function tagsToObjects(arr) {
 	const allObjs = [];
 	for (const item of arr) {
 		const itemExploded = item.split("=");
@@ -233,14 +236,34 @@ function tagsToObjects(...arr) {
 
 const featuresForm = document.querySelector("form.features");
 
+// function eachInterval(item, index) {
+// 	setTimeout(function () {
+// 		console.log(item);
+// 	}, index * interval);
+// }
+
 featuresForm.addEventListener("change", (e) => {
 	if (!e.target.checked) return;
 	const featureType = e.target.getAttribute("name");
-	if (featureType == "food") {
-		const foodObjects = tagsToObjects(definitions.food);
-		for (const item of foodObjects) {
-			const featureName = Object.values(item)[0][0];
-			console.log(featureName, item);
-		}
-	}
+	const foodObjects = tagsToObjects(definitions[featureType]);
+	// for (const item of foodObjects) {
+	// 	const featureName = Object.values(item)[0][0];
+	// 	console.log(featureName, item);
+	// 	getAmenitiesByBbox(item);
+	// }
+	foodObjects.forEach((item, index) => {
+		const featureName = Object.values(item)[0][0];
+		let interval = 5000;
+		setTimeout(function () {
+			console.log(featureName);
+			getAmenitiesByBbox(item);
+		}, index * interval);
+	});
+	// if (featureType == "food") {
+	// 	const foodObjects = tagsToObjects(definitions.food);
+	// 	for (const item of foodObjects) {
+	// 		const featureName = Object.values(item)[0][0];
+	// 		console.log(featureName, item);
+	// 	}
+	// }
 });
