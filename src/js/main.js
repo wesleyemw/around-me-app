@@ -5,8 +5,8 @@ import { toFeature } from "./utils";
 import definitions from "./definitions";
 
 const initialPosition = {
-	lon: -0.118092,
-	lat: 51.509865,
+	lon: 2.349014,
+	lat: 48.864716,
 };
 
 const map = new maplibregl.Map({
@@ -34,9 +34,9 @@ const map = new maplibregl.Map({
 	//         },
 	//     ],
 	// },
-	// london starting position
+	// paris starting position
 	center: [initialPosition.lon, initialPosition.lat],
-	zoom: 12,
+	zoom: 15,
 });
 
 map.on("load", async function () {
@@ -83,7 +83,7 @@ map.on("load", async function () {
 		type: "raster",
 		source: "t_pale",
 		minzoom: 0,
-		maxzoom: 18,
+		maxzoom: 22,
 	});
 
 	// GSI Ort
@@ -97,7 +97,7 @@ map.on("load", async function () {
 		type: "raster",
 		source: "t_ort",
 		minzoom: 0,
-		maxzoom: 18,
+		maxzoom: 22,
 	});
 
 	// BaseLayer
@@ -156,6 +156,12 @@ map.on("load", async function () {
 	});
 });
 
+// get data on map zoom - could be good to only show the form on a more apropriate zoom range
+map.on("zoom", function () {
+	console.log(map.getBounds());
+	console.log(map.getZoom());
+});
+
 function delay(ms) {
 	return new Promise((resolve) => {
 		setTimeout(resolve, ms);
@@ -177,7 +183,7 @@ async function getAmenitiesByBbox(tagsObj) {
 	overpassClient
 		.getElementsByBoundingBox(tags, box, elements)
 		.subscribe((response) => {
-			console.log(response);
+			console.log(response.elements);
 		});
 }
 
@@ -241,6 +247,12 @@ const featuresForm = document.querySelector("form.features");
 // 		console.log(item);
 // 	}, index * interval);
 // }
+
+// check map.zoomTo() method
+
+/**
+ * Check features on the active bounding box
+ */
 
 featuresForm.addEventListener("change", (e) => {
 	if (!e.target.checked) return;
