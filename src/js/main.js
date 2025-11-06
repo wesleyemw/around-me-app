@@ -138,29 +138,25 @@ map.on("load", async function () {
 	// });
 
 	// get data by bounding box
-	let bbox = map.getBounds();
-	//console.log(bbox);
-	// [minLat, minLon, maxLat, maxLon]
-	let points = {
-		minLat: bbox._sw.lat,
-		minLon: bbox._sw.lng,
-		maxLat: bbox._ne.lat,
-		maxLon: bbox._ne.lng,
-	};
-	// console.log(points);
-	const tags = { amenity: ["cafe", "restaurant"] };
-	const overpassClient = new OverpassClient();
-	const box = [points.minLat, points.minLon, points.maxLat, points.maxLon]; // [minLat, minLon, maxLat, maxLon]
-	overpassClient.getElementsByBoundingBox(tags, box).subscribe((response) => {
-		// console.log(response);
-	});
+	// let bbox = map.getBounds();
+	// //console.log(bbox);
+	// // [minLat, minLon, maxLat, maxLon]
+	// let points = {
+	// 	minLat: bbox._sw.lat,
+	// 	minLon: bbox._sw.lng,
+	// 	maxLat: bbox._ne.lat,
+	// 	maxLon: bbox._ne.lng,
+	// };
+	// // console.log(points);
+	// const tags = { amenity: ["cafe", "restaurant"] };
+	// const overpassClient = new OverpassClient();
+	// const box = [points.minLat, points.minLon, points.maxLat, points.maxLon]; // [minLat, minLon, maxLat, maxLon]
+	// overpassClient.getElementsByBoundingBox(tags, box).subscribe((response) => {
+	// 	// console.log(response);
+	// });
 });
 
 // get data on map zoom - could be good to only show the form on a more apropriate zoom range
-map.on("zoom", function () {
-	console.log(map.getBounds());
-	console.log(map.getZoom());
-});
 
 function delay(ms) {
 	return new Promise((resolve) => {
@@ -183,7 +179,42 @@ async function getAmenitiesByBbox(tagsObj) {
 	overpassClient
 		.getElementsByBoundingBox(tags, box, elements)
 		.subscribe((response) => {
-			console.log(response.elements);
+			// console.log(Object.values(tagsObj)[0][0]);
+			// console.log(response.elements);
+			let featureName = Object.values(tagsObj)[0][0];
+
+			if (response.elements.length != 0) {
+				console.log(`${featureName} has ${response.elements.length} items.`);
+				let items = [];
+				let geo = {};
+
+				geo["type"] = "FeatureCollection";
+				geo["features"] = [];
+				items.push(...response.elements);
+				items.forEach((item) => {
+					geo["features"].push(toFeature(item));
+				});
+				console.log(geo);
+
+				const geoJSONcontent = geo;
+				map.addSource(`layer_${featureName}`, {
+					type: "geojson",
+					data: geoJSONcontent,
+				});
+				map.addLayer({
+					id: `points_${featureName}`,
+					type: "circle",
+					source: `layer_${featureName}`,
+					minzoom: 12,
+					paint: {
+						"circle-radius": 12,
+						"circle-stroke-width": 1,
+						"circle-color": "red",
+						"circle-stroke-color": "white",
+						"circle-opacity": 0.5,
+					},
+				});
+			}
 		});
 }
 
@@ -242,40 +273,48 @@ function tagsToObjects(arr) {
 
 const featuresForm = document.querySelector("form.features");
 
-// function eachInterval(item, index) {
-// 	setTimeout(function () {
-// 		console.log(item);
-// 	}, index * interval);
-// }
-
 // check map.zoomTo() method
 
 /**
  * Check features on the active bounding box
  */
 
+let featureItems = [];
+let featureNames = [];
+
 featuresForm.addEventListener("change", (e) => {
 	if (!e.target.checked) return;
 	const featureType = e.target.getAttribute("name");
-	const foodObjects = tagsToObjects(definitions[featureType]);
-	// for (const item of foodObjects) {
-	// 	const featureName = Object.values(item)[0][0];
-	// 	console.log(featureName, item);
-	// 	getAmenitiesByBbox(item);
-	// }
-	foodObjects.forEach((item, index) => {
+	featureItems = tagsToObjects(definitions[featureType]);
+	featureItems.forEach((item, index) => {
 		const featureName = Object.values(item)[0][0];
+		featureNames.push(featureName);
 		let interval = 5000;
 		setTimeout(function () {
-			console.log(featureName);
+			// console.log(featureName);
 			getAmenitiesByBbox(item);
 		}, index * interval);
 	});
-	// if (featureType == "food") {
-	// 	const foodObjects = tagsToObjects(definitions.food);
-	// 	for (const item of foodObjects) {
-	// 		const featureName = Object.values(item)[0][0];
-	// 		console.log(featureName, item);
-	// 	}
-	// }
+	console.log(featureNames);
 });
+
+map.on("zoom", function () {
+	// console.log(map.getBounds());
+	// console.log(map.getZoom());
+	// console.log(featureNames);
+	if (featureNames.length > 0) {
+		featureNames.forEach((featureName) => {
+			if (map.getLayer(`layer_${featureName}`)) {
+				map.removeLayer(`layer_${featureName}`);
+
+				if (map.getSource(`layer_${featureName}`)) {
+					map.removeSource(`layer_${featureName}`);
+				}
+			}
+		});
+	}
+});
+// check this example to understand how to update the map dinamicaly
+// https://maplibre.org/maplibre-gl-js/docs/examples/add-live-realtime-data/
+// Update the drone symbol's location on the map
+// map.getSource("drone").setData(json);
