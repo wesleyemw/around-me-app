@@ -181,7 +181,7 @@ async function getAmenitiesByBbox(tagsObj) {
 		.subscribe((response) => {
 			// console.log(Object.values(tagsObj)[0][0]);
 			// console.log(response.elements);
-			let featureName = Object.values(tagsObj)[0][0];
+			let featureName = Object.values(tags)[0][0];
 
 			if (response.elements.length != 0) {
 				console.log(`${featureName} has ${response.elements.length} items.`);
@@ -190,6 +190,9 @@ async function getAmenitiesByBbox(tagsObj) {
 
 				geo["type"] = "FeatureCollection";
 				geo["features"] = [];
+
+				// clear the array
+				items.length = 0;
 				items.push(...response.elements);
 				items.forEach((item) => {
 					geo["features"].push(toFeature(item));
@@ -197,9 +200,22 @@ async function getAmenitiesByBbox(tagsObj) {
 				console.log(geo);
 
 				const geoJSONcontent = geo;
+				// probably needs to remove addSource from here
 				map.addSource(`layer_${featureName}`, {
 					type: "geojson",
-					data: geoJSONcontent,
+					data: {
+						type: "FeatureCollection",
+						features: [
+							{
+								type: "Feature",
+								properties: {},
+								geometry: {
+									type: "Point",
+									coordinates: [0, 0],
+								},
+							},
+						],
+					},
 				});
 				map.addLayer({
 					id: `points_${featureName}`,
@@ -207,13 +223,14 @@ async function getAmenitiesByBbox(tagsObj) {
 					source: `layer_${featureName}`,
 					minzoom: 12,
 					paint: {
-						"circle-radius": 12,
+						"circle-radius": 8,
 						"circle-stroke-width": 1,
 						"circle-color": "red",
 						"circle-stroke-color": "white",
 						"circle-opacity": 0.5,
 					},
 				});
+				map.getSource(`layer_${featureName}`).setData(geoJSONcontent);
 			}
 		});
 }
@@ -257,6 +274,12 @@ function getAmenitiesByRadius(lat, lon) {
 		});
 }
 
+/**
+ * helper function to convert the features from OSM to object and pass them to the overpass frontend api
+ * @param {*} arr
+ * @returns
+ */
+
 function tagsToObjects(arr) {
 	const allObjs = [];
 	for (const item of arr) {
@@ -283,36 +306,35 @@ let featureItems = [];
 let featureNames = [];
 
 featuresForm.addEventListener("change", (e) => {
-	if (!e.target.checked) return;
-	const featureType = e.target.getAttribute("name");
-	featureItems = tagsToObjects(definitions[featureType]);
-	featureItems.forEach((item, index) => {
-		const featureName = Object.values(item)[0][0];
-		featureNames.push(featureName);
-		let interval = 5000;
-		setTimeout(function () {
-			// console.log(featureName);
-			getAmenitiesByBbox(item);
-		}, index * interval);
-	});
-	console.log(featureNames);
+	// if (!e.target.checked) return;
+
+	if (e.target.checked) {
+		const featureType = e.target.getAttribute("name");
+
+		featureItems.length = 0;
+		featureItems = tagsToObjects(definitions[featureType]);
+		featureItems.forEach((item, index) => {
+			const featureName = Object.values(item)[0][0];
+
+			featureNames.length = 0;
+			featureNames.push(featureName);
+			let interval = 5000;
+			setTimeout(function () {
+				// console.log(featureName);
+				getAmenitiesByBbox(item);
+			}, index * interval);
+		});
+		console.log(featureNames);
+	} else {
+		const orderedLayerIds = map.getLayersOrder();
+		console.log(orderedLayerIds);
+	}
 });
 
 map.on("zoom", function () {
-	// console.log(map.getBounds());
-	// console.log(map.getZoom());
-	// console.log(featureNames);
-	if (featureNames.length > 0) {
-		featureNames.forEach((featureName) => {
-			if (map.getLayer(`layer_${featureName}`)) {
-				map.removeLayer(`layer_${featureName}`);
-
-				if (map.getSource(`layer_${featureName}`)) {
-					map.removeSource(`layer_${featureName}`);
-				}
-			}
-		});
-	}
+	console.log(map.getBounds());
+	console.log(map.getZoom());
+	console.log(featureNames);
 });
 // check this example to understand how to update the map dinamicaly
 // https://maplibre.org/maplibre-gl-js/docs/examples/add-live-realtime-data/
