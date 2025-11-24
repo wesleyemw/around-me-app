@@ -100,6 +100,51 @@ map.on("load", async function () {
 	// overpassClient.getElementsByBoundingBox(tags, box).subscribe((response) => {
 	// 	// console.log(response);
 	// });
+
+	let definitionsArr;
+
+	const allTags = [];
+
+	definitionsArr = Object.values(definitions);
+	definitionsArr.forEach((item) => {
+		for (const i of item) {
+			const itemSeparated = i.split("=");
+			const result = itemSeparated[0] + "_" + itemSeparated[1].trim();
+			allTags.push(result);
+		}
+	});
+	allTags.forEach((tag) => {
+		console.log(`layer_${tag}`);
+		map.addSource(`layer_${tag}`, {
+			type: "geojson",
+			data: {
+				type: "FeatureCollection",
+				features: [
+					{
+						type: "Feature",
+						properties: {},
+						geometry: {
+							type: "Point",
+							coordinates: [0, 0],
+						},
+					},
+				],
+			},
+		});
+		map.addLayer({
+			id: `points_${tag}`,
+			type: "circle",
+			source: `layer_${tag}`,
+			minzoom: 12,
+			paint: {
+				"circle-radius": 8,
+				"circle-stroke-width": 1,
+				"circle-color": "red",
+				"circle-stroke-color": "white",
+				"circle-opacity": 0.5,
+			},
+		});
+	});
 });
 
 // get data on map zoom - could be good to only show the form on a more apropriate zoom range
@@ -127,7 +172,10 @@ async function getAmenitiesByBbox(tagsObj) {
 		.subscribe((response) => {
 			// console.log(Object.values(tagsObj)[0][0]);
 			// console.log(response.elements);
+
+			let category = Object.keys(tags)[0];
 			let featureName = Object.values(tags)[0][0];
+			console.log("new layer name:", `layer_${category}_${featureName}`);
 
 			if (response.elements.length != 0) {
 				console.log(`${featureName} has ${response.elements.length} items.`);
@@ -177,7 +225,9 @@ async function getAmenitiesByBbox(tagsObj) {
 				// 		"circle-opacity": 0.5,
 				// 	},
 				// });
-				map.getSource(`layer_${featureName}`).setData(geoJSONcontent);
+				map
+					.getSource(`layer_${category}_${featureName}`)
+					.setData(geoJSONcontent);
 			}
 		});
 }
@@ -290,51 +340,6 @@ map.on("zoom", function () {
 
 (function () {
 	// transform the definitions objects into arrays
-	let definitionsArr;
-
-	const allTags = [];
-	definitionsArr = Object.values(definitions);
-	definitionsArr.forEach((item) => {
-		for (const i of item) {
-			const itemSeparated = i.split("=");
-			const result = itemSeparated[1].trim();
-			allTags.push(result);
-		}
-	});
-	allTags.forEach((tag) => {
-		console.log(`layer_${tag}`);
-		map.addSource(`layer_${tag}`, {
-			type: "geojson",
-			data: {
-				type: "FeatureCollection",
-				features: [
-					{
-						type: "Feature",
-						properties: {},
-						geometry: {
-							type: "Point",
-							coordinates: [0, 0],
-						},
-					},
-				],
-			},
-		});
-		// map.addLayer({
-		// 	id: `points_${tag}`,
-		// 	type: "circle",
-		// 	source: `layer_${tag}`,
-		// 	minzoom: 12,
-		// 	paint: {
-		// 		"circle-radius": 8,
-		// 		"circle-stroke-width": 1,
-		// 		"circle-color": "red",
-		// 		"circle-stroke-color": "white",
-		// 		"circle-opacity": 0.5,
-		// 	},
-		// });
-		// console.log(map.getLayersOrder());
-	});
-
 	// featureItems = tagsToObjects(definitions[featureType]);
 	// console.log("all items", featureItems);
 })();
