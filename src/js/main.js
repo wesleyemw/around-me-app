@@ -12,66 +12,12 @@ const initialPosition = {
 const map = new maplibregl.Map({
 	container: "map", // container id
 	style: "https://tiles.openfreemap.org/styles/bright",
-	// style: {
-	//     version: 8,
-	//     sources: {
-	//         o_std: {
-	//             type: 'raster',
-	//             tiles: [
-	//                 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-	//                 'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
-	//             ],
-	//             tileSize: 256,
-	//         },
-	//     },
-	//     layers: [
-	//         {
-	//             id: 'o_std',
-	//             type: 'raster',
-	//             source: 'o_std',
-	//             minzoom: 0,
-	//             maxzoom: 18,
-	//         },
-	//     ],
-	// },
 	// paris starting position
 	center: [initialPosition.lon, initialPosition.lat],
 	zoom: 15,
 });
 
 map.on("load", async function () {
-	// getAmenities(initialPosition.lat, initialPosition.lon);
-	// MIERUNE Color
-	// map.addSource('m_color', {
-	//     type: 'raster',
-	//     tiles: ['https://tile.mierune.co.jp/mierune/{z}/{x}/{y}.png'],
-	//     tileSize: 256,
-	// });
-	// map.addLayer({
-	//     id: 'm_color',
-	//     type: 'raster',
-	//     source: 'm_color',
-	//     minzoom: 0,
-	//     maxzoom: 18,
-	// });
-
-	// OpenStreetMap
-	// map.addSource('o_std', {
-	//     type: 'raster',
-	//     tiles: [
-	//         'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-	//         'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
-	//     ],
-	//     tileSize: 256,
-	// });
-	// map.addLayer({
-	//     id: 'o_std',
-	//     type: 'raster',
-	//     source: 'o_std',
-	//     minzoom: 0,
-	//     maxzoom: 18,
-	// });
-
 	// GSI Pale
 	map.addSource("t_pale", {
 		type: "raster",
@@ -200,36 +146,37 @@ async function getAmenitiesByBbox(tagsObj) {
 				console.log(geo);
 
 				const geoJSONcontent = geo;
+
 				// probably needs to remove addSource from here
-				map.addSource(`layer_${featureName}`, {
-					type: "geojson",
-					data: {
-						type: "FeatureCollection",
-						features: [
-							{
-								type: "Feature",
-								properties: {},
-								geometry: {
-									type: "Point",
-									coordinates: [0, 0],
-								},
-							},
-						],
-					},
-				});
-				map.addLayer({
-					id: `points_${featureName}`,
-					type: "circle",
-					source: `layer_${featureName}`,
-					minzoom: 12,
-					paint: {
-						"circle-radius": 8,
-						"circle-stroke-width": 1,
-						"circle-color": "red",
-						"circle-stroke-color": "white",
-						"circle-opacity": 0.5,
-					},
-				});
+				// map.addSource(`layer_${featureName}`, {
+				// 	type: "geojson",
+				// 	data: {
+				// 		type: "FeatureCollection",
+				// 		features: [
+				// 			{
+				// 				type: "Feature",
+				// 				properties: {},
+				// 				geometry: {
+				// 					type: "Point",
+				// 					coordinates: [0, 0],
+				// 				},
+				// 			},
+				// 		],
+				// 	},
+				// });
+				// map.addLayer({
+				// 	id: `points_${featureName}`,
+				// 	type: "circle",
+				// 	source: `layer_${featureName}`,
+				// 	minzoom: 12,
+				// 	paint: {
+				// 		"circle-radius": 8,
+				// 		"circle-stroke-width": 1,
+				// 		"circle-color": "red",
+				// 		"circle-stroke-color": "white",
+				// 		"circle-opacity": 0.5,
+				// 	},
+				// });
 				map.getSource(`layer_${featureName}`).setData(geoJSONcontent);
 			}
 		});
@@ -340,3 +287,54 @@ map.on("zoom", function () {
 // https://maplibre.org/maplibre-gl-js/docs/examples/add-live-realtime-data/
 // Update the drone symbol's location on the map
 // map.getSource("drone").setData(json);
+
+(function () {
+	// transform the definitions objects into arrays
+	let definitionsArr;
+
+	const allTags = [];
+	definitionsArr = Object.values(definitions);
+	definitionsArr.forEach((item) => {
+		for (const i of item) {
+			const itemSeparated = i.split("=");
+			const result = itemSeparated[1].trim();
+			allTags.push(result);
+		}
+	});
+	allTags.forEach((tag) => {
+		console.log(`layer_${tag}`);
+		map.addSource(`layer_${tag}`, {
+			type: "geojson",
+			data: {
+				type: "FeatureCollection",
+				features: [
+					{
+						type: "Feature",
+						properties: {},
+						geometry: {
+							type: "Point",
+							coordinates: [0, 0],
+						},
+					},
+				],
+			},
+		});
+		// map.addLayer({
+		// 	id: `points_${tag}`,
+		// 	type: "circle",
+		// 	source: `layer_${tag}`,
+		// 	minzoom: 12,
+		// 	paint: {
+		// 		"circle-radius": 8,
+		// 		"circle-stroke-width": 1,
+		// 		"circle-color": "red",
+		// 		"circle-stroke-color": "white",
+		// 		"circle-opacity": 0.5,
+		// 	},
+		// });
+		// console.log(map.getLayersOrder());
+	});
+
+	// featureItems = tagsToObjects(definitions[featureType]);
+	// console.log("all items", featureItems);
+})();
