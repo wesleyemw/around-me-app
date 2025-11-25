@@ -14,6 +14,8 @@ const map = new maplibregl.Map({
 	style: "https://tiles.openfreemap.org/styles/bright",
 	// paris starting position
 	center: [initialPosition.lon, initialPosition.lat],
+	pitch: 60,
+	pitchWithRotate: true,
 	zoom: 15,
 });
 
@@ -67,7 +69,11 @@ map.on("load", async function () {
 	map.addControl(Opacity, "bottom-left");
 
 	// NavigationControl
-	let nc = new maplibregl.NavigationControl();
+	let nc = new maplibregl.NavigationControl({
+		visualizePitch: true,
+		showZoom: true,
+		showCompass: true,
+	});
 	map.addControl(nc, "top-right");
 
 	// Add geolocate control to the map.
@@ -113,6 +119,7 @@ map.on("load", async function () {
 			allTags.push(result);
 		}
 	});
+	// create all layers and populate them later
 	allTags.forEach((tag) => {
 		console.log(`layer_${tag}`);
 		map.addSource(`layer_${tag}`, {
@@ -194,37 +201,6 @@ async function getAmenitiesByBbox(tagsObj) {
 				console.log(geo);
 
 				const geoJSONcontent = geo;
-
-				// probably needs to remove addSource from here
-				// map.addSource(`layer_${featureName}`, {
-				// 	type: "geojson",
-				// 	data: {
-				// 		type: "FeatureCollection",
-				// 		features: [
-				// 			{
-				// 				type: "Feature",
-				// 				properties: {},
-				// 				geometry: {
-				// 					type: "Point",
-				// 					coordinates: [0, 0],
-				// 				},
-				// 			},
-				// 		],
-				// 	},
-				// });
-				// map.addLayer({
-				// 	id: `points_${featureName}`,
-				// 	type: "circle",
-				// 	source: `layer_${featureName}`,
-				// 	minzoom: 12,
-				// 	paint: {
-				// 		"circle-radius": 8,
-				// 		"circle-stroke-width": 1,
-				// 		"circle-color": "red",
-				// 		"circle-stroke-color": "white",
-				// 		"circle-opacity": 0.5,
-				// 	},
-				// });
 				map
 					.getSource(`layer_${category}_${featureName}`)
 					.setData(geoJSONcontent);
@@ -251,23 +227,23 @@ function getAmenitiesByRadius(lat, lon) {
 			});
 			console.log(geo);
 			const geoJSONcontent = geo;
-			map.addSource("restaurants", {
-				type: "geojson",
-				data: geoJSONcontent,
-			});
-			map.addLayer({
-				id: "reverse_points",
-				type: "circle",
-				source: "restaurants",
-				minzoom: 12,
-				paint: {
-					"circle-radius": 12,
-					"circle-stroke-width": 1,
-					"circle-color": "red",
-					"circle-stroke-color": "white",
-					"circle-opacity": 0.5,
-				},
-			});
+			// map.addSource("restaurants", {
+			// 	type: "geojson",
+			// 	data: geoJSONcontent,
+			// });
+			// map.addLayer({
+			// 	id: "reverse_points",
+			// 	type: "circle",
+			// 	source: "restaurants",
+			// 	minzoom: 12,
+			// 	paint: {
+			// 		"circle-radius": 12,
+			// 		"circle-stroke-width": 1,
+			// 		"circle-color": "red",
+			// 		"circle-stroke-color": "white",
+			// 		"circle-opacity": 0.5,
+			// 	},
+			// });
 		});
 }
 
@@ -287,18 +263,8 @@ function tagsToObjects(arr) {
 	}
 	return allObjs;
 }
-// const foodObjects = tagsToObjects(food);
-// const transportObjects = tagsToObjects(transport);
-// const utilsObjects = tagsToObjects(utils);
 
 const featuresForm = document.querySelector("form.features");
-
-// check map.zoomTo() method
-
-/**
- * Check features on the active bounding box
- */
-
 let featureItems = [];
 let featureNames = [];
 
@@ -307,7 +273,6 @@ featuresForm.addEventListener("change", (e) => {
 
 	if (e.target.checked) {
 		const featureType = e.target.getAttribute("name");
-
 		featureItems.length = 0;
 		featureItems = tagsToObjects(definitions[featureType]);
 		featureItems.forEach((item, index) => {
@@ -323,14 +288,13 @@ featuresForm.addEventListener("change", (e) => {
 		});
 		console.log(featureNames);
 	} else {
-		const orderedLayerIds = map.getLayersOrder();
-		console.log(orderedLayerIds);
+		console.log(featureNames);
 	}
 });
 
 map.on("zoom", function () {
-	console.log(map.getBounds());
-	console.log(map.getZoom());
+	// console.log(map.getBounds());
+	// console.log(map.getZoom());
 	console.log(featureNames);
 });
 // check this example to understand how to update the map dinamicaly
