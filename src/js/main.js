@@ -14,8 +14,6 @@ const map = new maplibregl.Map({
 	style: "https://tiles.openfreemap.org/styles/bright",
 	// paris starting position
 	center: [initialPosition.lon, initialPosition.lat],
-	pitch: 60,
-	pitchWithRotate: true,
 	zoom: 15,
 });
 
@@ -283,6 +281,10 @@ featuresForm.addEventListener("change", (e) => {
 			let interval = 5000;
 			setTimeout(function () {
 				// console.log(featureName);
+				map.zoomTo(15, {
+				  duration: 2000,
+				  offset: [100, 50]
+				});
 				getAmenitiesByBbox(item);
 			}, index * interval);
 		});
@@ -301,9 +303,3 @@ map.on("zoom", function () {
 // https://maplibre.org/maplibre-gl-js/docs/examples/add-live-realtime-data/
 // Update the drone symbol's location on the map
 // map.getSource("drone").setData(json);
-
-(function () {
-	// transform the definitions objects into arrays
-	// featureItems = tagsToObjects(definitions[featureType]);
-	// console.log("all items", featureItems);
-})();
