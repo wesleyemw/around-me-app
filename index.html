@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MapLibre App</title>
-    <link rel="stylesheet" type="text/css" href="./src/css/main.css">
-</head>
-<body>
-    <main>
-        <div class="overlay">
-            <!-- <p>this is an overlay content</p> -->
-            <form class="features">
-                <fieldset>
-                    <input type="checkbox" name="food" id="food">
-                    <label for="food">Food</label>
-                    <input type="checkbox" name="cafe" id="cafe">
-                    <label for="cafe">Cafe</label>
-                    <input type="checkbox" name="dessert" id="dessert">
-                    <label for="dessert">Dessert</label>
-                    <input type="checkbox" name="groceries" id="groceries">
-                    <label for="groceries">Groceries</label>
-                    <input type="checkbox" name="transport" id="transport">
-                    <label for="transport">Transportation</label>
-                    <input type="checkbox" name="utils" id="utils">
-                    <label for="transport">Utilities</label>
-                </fieldgroup>
-            </form>
-        </div>
-        <div id="map"></div>
-    </main>
-    <script src="./src/js/main.js" type="module"></script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>MapLibre App</title>
+		<link rel="stylesheet" type="text/css" href="./src/css/main.css" />
+	</head>
+	<body>
+		<main>
+			<div class="overlay">
+				<!-- <p>this is an overlay content</p> -->
+				<form class="features">
+					<fieldgroup>
+						<input type="checkbox" name="food" id="food" />
+						<label for="food">Food</label>
+						<input type="checkbox" name="cafe" id="cafe" />
+						<label for="cafe">Cafe</label>
+						<input type="checkbox" name="dessert" id="dessert" />
+						<label for="dessert">Dessert</label>
+						<input type="checkbox" name="groceries" id="groceries" />
+						<label for="groceries">Groceries</label>
+						<input type="checkbox" name="transport" id="transport" />
+						<label for="transport">Transportation</label>
+						<input type="checkbox" name="utils" id="utils" />
+						<label for="transport">Utilities</label>
+					</fieldgroup>
+					<button class="reset">Reset</button>
+				</form>
+			</div>
+			<div id="map"></div>
+		</main>
+		<script src="./src/js/main.js" type="module"></script>
+	</body>
 </html>

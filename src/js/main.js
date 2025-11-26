@@ -18,6 +18,11 @@ const map = new maplibregl.Map({
 });
 
 map.on("load", async function () {
+	const image = await map.loadImage(
+		"https://maplibre.org/maplibre-gl-js/docs/assets/custom_marker.png"
+	);
+	// Add an image to use as a custom marker
+	map.addImage("custom-marker", image.data);
 	// GSI Pale
 	map.addSource("t_pale", {
 		type: "raster",
@@ -105,8 +110,10 @@ map.on("load", async function () {
 	// 	// console.log(response);
 	// });
 
+	// all items from definitions to an array
 	let definitionsArr;
 
+	// definitions as tags
 	const allTags = [];
 
 	definitionsArr = Object.values(definitions);
@@ -119,7 +126,7 @@ map.on("load", async function () {
 	});
 	// create all layers and populate them later
 	allTags.forEach((tag) => {
-		console.log(`layer_${tag}`);
+		// console.log(`layer_${tag}`);
 		map.addSource(`layer_${tag}`, {
 			type: "geojson",
 			data: {
@@ -138,16 +145,20 @@ map.on("load", async function () {
 		});
 		map.addLayer({
 			id: `points_${tag}`,
-			type: "circle",
+			type: "symbol",
 			source: `layer_${tag}`,
 			minzoom: 12,
-			paint: {
-				"circle-radius": 8,
-				"circle-stroke-width": 1,
-				"circle-color": "red",
-				"circle-stroke-color": "white",
-				"circle-opacity": 0.5,
+			layout: {
+				"icon-image": "custom-marker",
+				"icon-overlap": "always",
 			},
+			// paint: {
+			// 	"circle-radius": 8,
+			// 	"circle-stroke-width": 1,
+			// 	"circle-color": "red",
+			// 	"circle-stroke-color": "white",
+			// 	"circle-opacity": 0.5,
+			// },
 		});
 	});
 });
@@ -180,7 +191,7 @@ async function getAmenitiesByBbox(tagsObj) {
 
 			let category = Object.keys(tags)[0];
 			let featureName = Object.values(tags)[0][0];
-			console.log("new layer name:", `layer_${category}_${featureName}`);
+			//console.log("new layer name:", `layer_${category}_${featureName}`);
 
 			if (response.elements.length != 0) {
 				console.log(`${featureName} has ${response.elements.length} items.`);
@@ -217,13 +228,13 @@ function getAmenitiesByRadius(lat, lon) {
 			let geo = {};
 			geo["type"] = "FeatureCollection";
 			geo["features"] = [];
-			console.log(response.elements);
+			// console.log(response.elements);
 
 			items.push(...response.elements);
 			items.forEach((item) => {
 				geo["features"].push(toFeature(item));
 			});
-			console.log(geo);
+			// console.log(geo);
 			const geoJSONcontent = geo;
 			// map.addSource("restaurants", {
 			// 	type: "geojson",
@@ -263,17 +274,19 @@ function tagsToObjects(arr) {
 }
 
 const featuresForm = document.querySelector("form.features");
-let featureItems = [];
+let activeFeatureItems = [];
 let featureNames = [];
 
 featuresForm.addEventListener("change", (e) => {
 	// if (!e.target.checked) return;
 
+	const featureType = e.target.getAttribute("name");
+
 	if (e.target.checked) {
-		const featureType = e.target.getAttribute("name");
-		featureItems.length = 0;
-		featureItems = tagsToObjects(definitions[featureType]);
-		featureItems.forEach((item, index) => {
+		console.log("item checked:", featureType);
+		activeFeatureItems.length = 0;
+		activeFeatureItems = tagsToObjects(definitions[featureType]);
+		activeFeatureItems.forEach((item, index) => {
 			const featureName = Object.values(item)[0][0];
 
 			featureNames.length = 0;
@@ -282,22 +295,32 @@ featuresForm.addEventListener("change", (e) => {
 			setTimeout(function () {
 				// console.log(featureName);
 				map.zoomTo(15, {
-				  duration: 2000,
-				  offset: [100, 50]
+					duration: 2000,
+					offset: [100, 50],
 				});
 				getAmenitiesByBbox(item);
 			}, index * interval);
 		});
-		console.log(featureNames);
+		console.log("active feature items", activeFeatureItems);
 	} else {
-		console.log(featureNames);
+		let removedItemObj = tagsToObjects(definitions[featureType]);
+		console.log("object unchecked:", removedItemObj);
+
+		// I can try to flat the object here, get the layers names and reset their sources
+
+		// let tempArray;
+		// removedItemObj.forEach((item) => {
+		// 	tempArray = activeFeatureItems.filter((element) => {
+		// 		return element != item;
+		// 	});
+		// });
+		// console.log("temp array", tempArray);
 	}
 });
 
 map.on("zoom", function () {
-	// console.log(map.getBounds());
-	// console.log(map.getZoom());
-	console.log(featureNames);
+	console.log(map.getBounds());
+	console.log(map.getZoom());
 });
 // check this example to understand how to update the map dinamicaly
 // https://maplibre.org/maplibre-gl-js/docs/examples/add-live-realtime-data/
