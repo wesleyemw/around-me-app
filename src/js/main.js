@@ -148,10 +148,10 @@ map.on("load", async function () {
 			type: "symbol",
 			source: `layer_${tag}`,
 			minzoom: 12,
-			layout: {
-				"icon-image": "custom-marker",
-				"icon-overlap": "always",
-			},
+			// layout: {
+			// 	"icon-image": "custom-marker",
+			// 	"icon-overlap": "always",
+			// },
 			// paint: {
 			// 	"circle-radius": 8,
 			// 	"circle-stroke-width": 1,
@@ -201,13 +201,37 @@ async function getAmenitiesByBbox(tagsObj) {
 				geo["type"] = "FeatureCollection";
 				geo["features"] = [];
 
+
+
 				// clear the array
 				items.length = 0;
 				items.push(...response.elements);
 				items.forEach((item) => {
 					geo["features"].push(toFeature(item));
-				});
-				console.log(geo);
+				});			
+
+				geo.features.forEach((marker) => {
+					        // create a DOM element for the marker
+					        const el = document.createElement('div');
+					        el.classList = `marker layer_${category}_${featureName}`;
+					        // el.style.backgroundImage =
+					        //     `url(https://picsum.photos/${
+					        //         marker.properties.iconSize.join('/')
+					        //     }/)`;
+					        // el.style.backgroundColor = '#ff00ff';
+					        // el.style.width = `24px`;
+					        // el.style.height = `24px`;
+					        // el.style.borderRadius = `16px`;
+
+					        el.addEventListener('click', () => {
+					            window.alert(marker.properties.message);
+					        });
+
+			        // add marker to map
+			        new maplibregl.Marker({element: el})
+			            .setLngLat(marker.geometry.coordinates)
+			            .addTo(map);
+			    });
 
 				const geoJSONcontent = geo;
 				map
@@ -217,44 +241,27 @@ async function getAmenitiesByBbox(tagsObj) {
 		});
 }
 
-function getAmenitiesByRadius(lat, lon) {
-	const overpassClient = new OverpassClient();
-	const tags = { amenity: ["restaurant"] };
-	const radius = 1000;
-	overpassClient
-		.getElementsByRadius(tags, lat, lon, radius)
-		.subscribe((response) => {
-			let items = [];
-			let geo = {};
-			geo["type"] = "FeatureCollection";
-			geo["features"] = [];
-			// console.log(response.elements);
+// function getAmenitiesByRadius(lat, lon) {
+// 	const overpassClient = new OverpassClient();
+// 	const tags = { amenity: ["restaurant"] };
+// 	const radius = 1000;
+// 	overpassClient
+// 		.getElementsByRadius(tags, lat, lon, radius)
+// 		.subscribe((response) => {
+// 			let items = [];
+// 			let geo = {};
+// 			geo["type"] = "FeatureCollection";
+// 			geo["features"] = [];
+// 			// console.log(response.elements);
 
-			items.push(...response.elements);
-			items.forEach((item) => {
-				geo["features"].push(toFeature(item));
-			});
-			// console.log(geo);
-			const geoJSONcontent = geo;
-			// map.addSource("restaurants", {
-			// 	type: "geojson",
-			// 	data: geoJSONcontent,
-			// });
-			// map.addLayer({
-			// 	id: "reverse_points",
-			// 	type: "circle",
-			// 	source: "restaurants",
-			// 	minzoom: 12,
-			// 	paint: {
-			// 		"circle-radius": 12,
-			// 		"circle-stroke-width": 1,
-			// 		"circle-color": "red",
-			// 		"circle-stroke-color": "white",
-			// 		"circle-opacity": 0.5,
-			// 	},
-			// });
-		});
-}
+// 			items.push(...response.elements);
+// 			items.forEach((item) => {
+// 				geo["features"].push(toFeature(item));
+// 			});
+// 			// console.log(geo);
+// 			const geoJSONcontent = geo;
+// 		});
+// }
 
 /**
  * helper function to convert the features from OSM to object and pass them to the overpass frontend api
@@ -318,7 +325,7 @@ featuresForm.addEventListener("change", (e) => {
 	}
 });
 
-map.on("zoom", function () {
+map.on("zoom", function() {
 	console.log(map.getBounds());
 	console.log(map.getZoom());
 });

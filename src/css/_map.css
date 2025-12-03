@@ -32,3 +32,21 @@ main > * {
 #opacity-control {
     border-radius: 2px;
 }
+
+.marker {
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+    opacity: 0.75 !important;
+    background-color: royalblue;
+}
+
+.marker.layer_amenity_toilets  {
+    background-color: aquamarine;
+}
+.marker.layer_amenity_internet_cafe {
+    background-color: aqua;
+}
+.marker.layer_shop_storage_rental {
+    background-color: #ff00ff;
+}
