@@ -195,6 +195,7 @@ async function getAmenitiesByBbox(tagsObj) {
 
 			if (response.elements.length != 0) {
 				console.log(`${featureName} has ${response.elements.length} items.`);
+				// activeLayersNames.push(`layer_${category}_${featureName}`);
 				let items = [];
 				let geo = {};
 
@@ -283,6 +284,7 @@ function tagsToObjects(arr) {
 const featuresForm = document.querySelector("form.features");
 let activeFeatureItems = [];
 let featureNames = [];
+// let activeLayersNames = [];
 
 featuresForm.addEventListener("change", (e) => {
 	// if (!e.target.checked) return;
@@ -308,10 +310,41 @@ featuresForm.addEventListener("change", (e) => {
 				getAmenitiesByBbox(item);
 			}, index * interval);
 		});
-		console.log("active feature items", activeFeatureItems);
+		console.log("active feature items:", activeFeatureItems);
+		console.log("active layers:", activeLayersNames);
 	} else {
 		let removedItemObj = tagsToObjects(definitions[featureType]);
 		console.log("object unchecked:", removedItemObj);
+
+		let removedLayers = []
+
+		for (const item of removedItemObj) {
+				let name;
+			  	name = `layer_${Object.keys(item)}_${Object.values(item)}`;
+			  	// console.log(Object.keys(item));
+			  	// console.log(Object.values(item));
+			  	removedLayers.push(name);
+		}
+
+		removedLayers.forEach(layer => {
+			// const emptyGeoJson = {
+			//   "type": "FeatureCollection",
+			//   "features": [{
+			//       "type": "Feature",
+			//       "properties": { "name": "Null Island" },
+			//       "geometry": {
+			//           "type": "Point",
+			//           "coordinates": [ 0, 0 ]
+			//       }
+			//   }]
+			// };
+			console.log('layer name:', layer);
+			let removedMarkers = Array.from(document.querySelectorAll(`.${ layer }`));
+			for (const item of removedMarkers) {
+				item.style.display = 'none';
+			}
+
+		})
 
 		// I can try to flat the object here, get the layers names and reset their sources
 
