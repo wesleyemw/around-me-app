@@ -215,17 +215,8 @@ async function getAmenitiesByBbox(tagsObj) {
 					        // create a DOM element for the marker
 					        const el = document.createElement('div');
 					        el.classList = `marker layer_${category}_${featureName}`;
-					        // el.style.backgroundImage =
-					        //     `url(https://picsum.photos/${
-					        //         marker.properties.iconSize.join('/')
-					        //     }/)`;
-					        // el.style.backgroundColor = '#ff00ff';
-					        // el.style.width = `24px`;
-					        // el.style.height = `24px`;
-					        // el.style.borderRadius = `16px`;
-
 					        el.addEventListener('click', () => {
-					            window.alert(marker.properties.message);
+					            console.log(marker.properties);
 					        });
 
 			        // add marker to map
@@ -281,10 +272,22 @@ function tagsToObjects(arr) {
 	return allObjs;
 }
 
+
+function removeLayers(arr) {
+	arr.forEach((layer) => {
+		const removedMarkers = Array.from(document.querySelectorAll(`.${ layer }`));
+		for (const item of removedMarkers) {
+			item.style.display = 'none';
+		}
+	})
+}
+
 const featuresForm = document.querySelector("form.features");
 let activeFeatureItems = [];
 let featureNames = [];
-// let activeLayersNames = [];
+
+const inactiveLayers = [];
+const activeLayersNames = [];
 
 featuresForm.addEventListener("change", (e) => {
 	// if (!e.target.checked) return;
@@ -295,68 +298,59 @@ featuresForm.addEventListener("change", (e) => {
 		console.log("item checked:", featureType);
 		activeFeatureItems.length = 0;
 		activeFeatureItems = tagsToObjects(definitions[featureType]);
+
 		activeFeatureItems.forEach((item, index) => {
 			const featureName = Object.values(item)[0][0];
 
 			featureNames.length = 0;
 			featureNames.push(featureName);
-			let interval = 5000;
+
+			const interval = 5000;
 			setTimeout(function () {
 				// console.log(featureName);
-				map.zoomTo(15, {
-					duration: 2000,
-					offset: [100, 50],
-				});
+				// map.zoomTo(15, {
+				// 	duration: 2000,
+				// 	offset: [100, 50],
+				// });
 				getAmenitiesByBbox(item);
 			}, index * interval);
 		});
+
+		for (const item of activeFeatureItems) {
+			let name;
+			name = `layer_${Object.keys(item)}_${Object.values(item)}`;
+			activeLayersNames.push(name);
+		}
+
 		console.log("active feature items:", activeFeatureItems);
 		console.log("active layers:", activeLayersNames);
 	} else {
-		let removedItemObj = tagsToObjects(definitions[featureType]);
+		const removedItemObj = tagsToObjects(definitions[featureType]);
 		console.log("object unchecked:", removedItemObj);
-
-		let removedLayers = []
 
 		for (const item of removedItemObj) {
 				let name;
 			  	name = `layer_${Object.keys(item)}_${Object.values(item)}`;
-			  	// console.log(Object.keys(item));
-			  	// console.log(Object.values(item));
-			  	removedLayers.push(name);
+			  	inactiveLayers.push(name);
 		}
 
-		removedLayers.forEach(layer => {
-			// const emptyGeoJson = {
-			//   "type": "FeatureCollection",
-			//   "features": [{
-			//       "type": "Feature",
-			//       "properties": { "name": "Null Island" },
-			//       "geometry": {
-			//           "type": "Point",
-			//           "coordinates": [ 0, 0 ]
-			//       }
-			//   }]
-			// };
-			console.log('layer name:', layer);
-			let removedMarkers = Array.from(document.querySelectorAll(`.${ layer }`));
-			for (const item of removedMarkers) {
-				item.style.display = 'none';
-			}
-
-		})
-
-		// I can try to flat the object here, get the layers names and reset their sources
-
-		// let tempArray;
-		// removedItemObj.forEach((item) => {
-		// 	tempArray = activeFeatureItems.filter((element) => {
-		// 		return element != item;
-		// 	});
-		// });
-		// console.log("temp array", tempArray);
+		removeLayers(inactiveLayers);
 	}
 });
+
+document.addEventListener('click', (e)=>{
+	// reset all active layers
+	if (e.target.classList.contains('reset')) {
+		e.preventDefault();
+		const checkboxes = featuresForm.querySelectorAll('input[type="checkbox"]');
+		if (!activeLayersNames.length > 0) return;
+		removeLayers(activeLayersNames);
+		for (const checkbox of checkboxes) {
+			checkbox.checked = false;
+		}
+	}
+})
+
 
 map.on("zoom", function() {
 	console.log(map.getBounds());
