@@ -1,0 +1,11 @@
+form.features {
+    fieldgroup {
+        display: block;
+        border: solid 0.1rem #f0f;
+    }
+
+}
+.check-group {
+    display: flex;
+    align-items: center;
+}

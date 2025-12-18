@@ -30,17 +30,24 @@
 
 export default {
 	food: ["amenity=restaurant", "amenity=fast_food", "amenity=food_court"],
-	cafe: ["amenity=cafe", "shop=bakery", "shop=pastry"],
-	dessert: ["amenity=ice_cream", "shop=confectionery", "shop=chocolate"],
-	groceries: ["shop=supermarket", "shop=convenience", "shop=greengrocer"],
-	transport: [
-		"railway=station",
-		"station=subway",
-		"amenity=bus_station",
-		"highway=bus_stop",
-		"railway=tram_stop",
-		"amenity=ferry_terminal",
-		"aerialway=station",
+	cafe: ["amenity=cafe", "shop=bakery"],
+	bar: ["amenity=bar"],
+	dessert: [
+		"amenity=ice_cream",
+		"shop=confectionery",
+		"shop=chocolate",
+		"shop=pastry",
 	],
+	groceries: [
+		"shop=supermarket",
+		"shop=greengrocer",
+		"shop=convenience",
+		"amenity=marketplace",
+	],
+	rail: ["railway=station", "station=subway"],
+	tram: ["railway=tram_stop"],
+	bus: ["amenity=bus_station", "highway=bus_stop"],
+	otherTransport: ["amenity=ferry_terminal", "aerialway=station"],
 	utils: ["shop=storage_rental", "amenity=toilets", "amenity=internet_cafe"],
+	healthcare: ["amenity=pharmacy", "amenity=hospital"],
 };

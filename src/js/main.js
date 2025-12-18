@@ -161,6 +161,8 @@ map.on("load", async function () {
 			// },
 		});
 	});
+	//getAmenitiesByBbox({ tourism: ["museum"] });
+	//getAmenitiesByBbox({ station: ["subway"] });
 });
 
 // get data on map zoom - could be good to only show the form on a more apropriate zoom range
@@ -202,28 +204,26 @@ async function getAmenitiesByBbox(tagsObj) {
 				geo["type"] = "FeatureCollection";
 				geo["features"] = [];
 
-
-
 				// clear the array
 				items.length = 0;
 				items.push(...response.elements);
 				items.forEach((item) => {
 					geo["features"].push(toFeature(item));
-				});			
+				});
 
 				geo.features.forEach((marker) => {
-					        // create a DOM element for the marker
-					        const el = document.createElement('div');
-					        el.classList = `marker layer_${category}_${featureName}`;
-					        el.addEventListener('click', () => {
-					            console.log(marker.properties);
-					        });
+					// create a DOM element for the marker
+					const el = document.createElement("div");
+					el.classList = `marker layer_${category}_${featureName}`;
+					el.addEventListener("click", () => {
+						console.log(marker.properties);
+					});
 
-			        // add marker to map
-			        new maplibregl.Marker({element: el})
-			            .setLngLat(marker.geometry.coordinates)
-			            .addTo(map);
-			    });
+					// add marker to map
+					new maplibregl.Marker({ element: el })
+						.setLngLat(marker.geometry.coordinates)
+						.addTo(map);
+				});
 
 				const geoJSONcontent = geo;
 				map
@@ -272,14 +272,13 @@ function tagsToObjects(arr) {
 	return allObjs;
 }
 
-
 function removeLayers(arr) {
 	arr.forEach((layer) => {
-		const removedMarkers = Array.from(document.querySelectorAll(`.${ layer }`));
+		const removedMarkers = Array.from(document.querySelectorAll(`.${layer}`));
 		for (const item of removedMarkers) {
-			item.style.display = 'none';
+			item.style.display = "none";
 		}
-	})
+	});
 }
 
 const featuresForm = document.querySelector("form.features");
@@ -329,18 +328,18 @@ featuresForm.addEventListener("change", (e) => {
 		console.log("object unchecked:", removedItemObj);
 
 		for (const item of removedItemObj) {
-				let name;
-			  	name = `layer_${Object.keys(item)}_${Object.values(item)}`;
-			  	inactiveLayers.push(name);
+			let name;
+			name = `layer_${Object.keys(item)}_${Object.values(item)}`;
+			inactiveLayers.push(name);
 		}
 
 		removeLayers(inactiveLayers);
 	}
 });
 
-document.addEventListener('click', (e)=>{
+document.addEventListener("click", (e) => {
 	// reset all active layers
-	if (e.target.classList.contains('reset')) {
+	if (e.target.classList.contains("reset")) {
 		e.preventDefault();
 		const checkboxes = featuresForm.querySelectorAll('input[type="checkbox"]');
 		if (!activeLayersNames.length > 0) return;
@@ -349,10 +348,9 @@ document.addEventListener('click', (e)=>{
 			checkbox.checked = false;
 		}
 	}
-})
+});
 
-
-map.on("zoom", function() {
+map.on("zoom", function () {
 	console.log(map.getBounds());
 	console.log(map.getZoom());
 });
