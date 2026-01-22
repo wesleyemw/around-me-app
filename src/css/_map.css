@@ -38,7 +38,7 @@ main > * {
     height: 24px;
     border-radius: 24px;
     opacity: 0.75 !important;
-    background-color: royalblue;
+    background-color: var(--color-marker);
     cursor: pointer;
     transform: scale(1.0);
     &:hover {
@@ -46,14 +46,38 @@ main > * {
         transform: scale(1.1);
     }
 }
-
-
-.marker.layer_amenity_toilets  {
-    background-color: aquamarine;
+.marker.layer_railway_station,
+.marker.layer_station_subway {
+    background-color: var(--color-marker-rail);
 }
-.marker.layer_amenity_internet_cafe {
-    background-color: aqua;
+.marker.layer_amenity_restaurant,
+.marker.layer_amenity_fast_food,
+.marker.layer_amenity_food_court,
+.marker.layer_amenity_bar {
+    background-color: var(--color-marker-food);
 }
-.marker.layer_shop_storage_rental {
-    background-color: #ff00ff;
+.marker.layer_amenity_ice_cream,
+.marker.layer_shop_confectionery,
+.marker.layer_shop_chocolate,
+.marker.layer_shop_pastry {
+    background-color: var(--color-marker-dessert);
+}
+.marker.layer_amenity_cafe,
+.marker.layer_shop_bakery {
+    background-color: var(--color-marker-cafe);
+}
+.marker.layer_shop_supermarket,
+.marker.layer_shop_greengrocer,
+.marker.layer_shop_convenience,
+.marker.layer_amenity_marketplace {
+    background-color: var(--color-marker-groceries);
+}
+.marker.layer_shop_storage_rental,
+.marker.layer_amenity_toilets,
+.marker.layer_amenity_internet_cafe  {
+    background-color: var(--color-marker-utils);
+}
+.marker.layer_amenity_pharmacy,
+.marker.layer_amenity_hospital {
+    background-color: var(--color-marker-health);
 }
