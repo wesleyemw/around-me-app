@@ -11,7 +11,7 @@ main > * {
     z-index: 1;
     background-color: #fff;
     border-radius: 5px;
-    width: 20rem;
+    width: 20vw;
     height: auto;
     margin: 5px 0 0 5px;
     padding: 5px;
@@ -34,16 +34,17 @@ main > * {
 }
 
 .marker {
-    width: 24px;
-    height: 24px;
-    border-radius: 24px;
+    width: 1vw;
+    height: 1vw;
+    border-radius: 1vw;
     opacity: 0.75 !important;
     background-color: var(--color-marker);
     cursor: pointer;
-    transform: scale(1.0);
+    transform: scale(1.0) translateX(0);
+    box-shadow: 4px 2px 4px 0px rgba(166,166,166,0.75);
     &:hover {
         opacity: 1 !important;
-        transform: scale(1.1);
+        transform: scale(1.1) translateX(2px);
     }
 }
 
