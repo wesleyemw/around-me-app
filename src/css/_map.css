@@ -46,6 +46,7 @@ main > * {
         transform: scale(1.1);
     }
 }
+
 .marker.layer_railway_station,
 .marker.layer_station_subway {
     background-color: var(--color-marker-rail);
