@@ -19,7 +19,7 @@ const map = new maplibregl.Map({
 
 map.on("load", async function () {
 	const image = await map.loadImage(
-		"https://maplibre.org/maplibre-gl-js/docs/assets/custom_marker.png"
+		"https://maplibre.org/maplibre-gl-js/docs/assets/custom_marker.png",
 	);
 	// Add an image to use as a custom marker
 	map.addImage("custom-marker", image.data);
@@ -201,6 +201,8 @@ async function getAmenitiesByBbox(tagsObj) {
 				let items = [];
 				let geo = {};
 
+				const rightPanel = document.querySelector(".overlay.right");
+
 				geo["type"] = "FeatureCollection";
 				geo["features"] = [];
 
@@ -217,6 +219,9 @@ async function getAmenitiesByBbox(tagsObj) {
 					el.classList = `marker layer_${category}_${featureName}`;
 					el.addEventListener("click", () => {
 						console.log(marker.properties);
+						if (rightPanel !== null) {
+							rightPanel.classList.add("open");
+						}
 					});
 
 					// add marker to map
@@ -347,6 +352,11 @@ document.addEventListener("click", (e) => {
 		for (const checkbox of checkboxes) {
 			checkbox.checked = false;
 		}
+	}
+	// toggle overlays elements
+	if (e.target.dataset.toggle == "overlay") {
+		const parent = e.target.parentNode;
+		parent.classList.toggle("open");
 	}
 });
 

@@ -1,20 +1,38 @@
 main {
-    display: grid;
-    grid-template-areas: 'map';
+    /* display: grid; */
+    /* grid-template-areas: 'map'; */
+    /* grid-template-columns: repeat(3, 1fr); */
+    position: relative;
 }
-
-main > * {
-    place-items: grid-start;
+/* main > * {
+    place-items: center;
     grid-area: map;
-}
+} */
 .overlay {
     z-index: 1;
     background-color: #fff;
     border-radius: 5px;
+    position: absolute;
     width: 20vw;
-    height: auto;
-    margin: 5px 0 0 5px;
+    height: 95vh;
     padding: 5px;
+    grid-column: 1 / 2;
+    top: 1vh;
+    transition: all 0.2s ease-in-out;
+    &.left {
+        left: 1vh;
+    }
+    &.right {
+        right: 1vh;
+        /* z-index: -1; */
+        visibility: hidden;
+        opacity: 0;
+        &.open {
+            /* z-index: 1; */
+            opacity: 1;
+            visibility: visible;
+        }
+    }
     & fieldset {
         display: flex;
         flex-direction: column;
@@ -25,6 +43,9 @@ main > * {
     height: 98vh;
     width: 100%;
     margin: 0 auto;
+    z-index: 0;
+    grid-row: span 4;
+    grid-column: auto;
     font-family: 'Helvetica', sans-serif;
     z-index: 0;
 }
