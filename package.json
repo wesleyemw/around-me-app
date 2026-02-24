@@ -13,15 +13,17 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "maplibre-gl-opacity": "^1.8.0",
     "@andreasnicolaou/overpass-client": "^1.2.0",
-    "vite": "^7.1.7"
+    "@biomejs/biome": "2.4.4",
+    "maplibre-gl-opacity": "^1.8.0",
+    "vite": "^7.1.7",
+    "vite-plugin-biome": "^1.1.3"
   },
   "dependencies": {
     "maplibre-gl": "^5.7.0"
   },
   "engines": {
     "npm": ">=10.0.0 <11.4.2",
-    "node": "22.16.0"
+    "node": "^22.16.0"
   }
 }
