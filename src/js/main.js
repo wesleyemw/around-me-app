@@ -364,6 +364,18 @@ map.on("zoom", function () {
 	console.log(map.getBounds());
 	console.log(map.getZoom());
 });
+
+const paramsObj = {
+	lat: initialPosition.lat,
+	lon: initialPosition.lon,
+};
+const searchParams = new URLSearchParams(
+	`lat=${initialPosition.lat}&lon=${initialPosition.lon}`,
+);
+
+window.history.replaceState({}, "", `${location.pathname}?${searchParams}`);
+
+//console.log(document.URL);
 // check this example to understand how to update the map dinamicaly
 // https://maplibre.org/maplibre-gl-js/docs/examples/add-live-realtime-data/
 // Update the drone symbol's location on the map
