@@ -1,55 +1,26 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
-	"vcs": {
-		"enabled": true,
-		"clientKind": "git",
-		"useIgnoreFile": true
-	},
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"files": {
-		"ignoreUnknown": false
+		"includes": ["src/css/**/*", "src/js/**/*"]
 	},
 	"formatter": {
-		"enabled": true,
 		"indentStyle": "tab"
 	},
 	"linter": {
-		"enabled": true,
 		"rules": {
-			"recommended": true
-		}
-	},
-	"javascript": {
-		"formatter": {
-			"quoteStyle": "double"
-		}
-	},
-	"assist": {
-		"enabled": true,
-		"actions": {
-			"source": {
-				"organizeImports": "on"
-			}
-		}
-	},
-	"overrides": [
-		{
-			"includes": [
-				"*.config.{js,ts,mjs}",
-				"*.setup.{js,ts}",
-				"vite.config.*",
-				"vitest.config.*",
-				"playwright.config.*"
-			],
-			"linter": {
-				"rules": {
-					"style": {
-						"noDefaultExport": "off"
-					},
-					"suspicious": {
-						"noConsole": "off"
+			"suspicious": {
+				"noConsole": {
+					"level": "warn",
+					"options": {
+						"allow": ["assert", "error", "info", "warn"]
 					}
 				}
 			}
 		}
-	]
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single"
+		}
+	}
 }
