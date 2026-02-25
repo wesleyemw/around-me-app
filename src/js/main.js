@@ -175,8 +175,8 @@ map.on("load", async () => {
 // }
 
 async function getAmenitiesByBbox(tagsObj) {
-  let bbox = map.getBounds();
-  let points = {
+  const bbox = map.getBounds();
+  const points = {
     minLat: bbox._sw.lat,
     minLon: bbox._sw.lng,
     maxLat: bbox._ne.lat,
@@ -289,7 +289,7 @@ function removeLayers(arr) {
 
 const featuresForm = document.querySelector("form.features");
 let activeFeatureItems = [];
-let featureNames = [];
+const featureNames = [];
 
 const inactiveLayers = [];
 const activeLayersNames = [];
@@ -357,7 +357,7 @@ document.addEventListener("click", (e) => {
     }
   }
   // toggle overlays elements
-  if (e.target.dataset.toggle == "overlay") {
+  if (e.target.dataset.toggle === "overlay") {
     const parent = e.target.parentNode;
     parent.classList.toggle("open");
   }
