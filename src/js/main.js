@@ -17,7 +17,7 @@ const map = new maplibregl.Map({
   zoom: 15,
 });
 
-map.on("load", async function () {
+map.on("load", async () => {
   const image = await map.loadImage(
     "https://maplibre.org/maplibre-gl-js/docs/assets/custom_marker.png",
   );
@@ -64,7 +64,7 @@ map.on("load", async function () {
   };
 
   // OpacityControl
-  let Opacity = new OpacityControl({
+  const Opacity = new OpacityControl({
     // baseLayers: mapBaseLayer,
     overLayers: mapOverLayer,
     opacityControl: true,
@@ -72,7 +72,7 @@ map.on("load", async function () {
   map.addControl(Opacity, "bottom-left");
 
   // NavigationControl
-  let nc = new maplibregl.NavigationControl({
+  const nc = new maplibregl.NavigationControl({
     visualizePitch: true,
     showZoom: true,
     showCompass: true,
@@ -80,7 +80,7 @@ map.on("load", async function () {
   map.addControl(nc, "top-right");
 
   // Add geolocate control to the map.
-  let locate = new maplibregl.GeolocateControl({
+  const locate = new maplibregl.GeolocateControl({
     positionOptions: {
       enableHighAccuracy: true,
     },
@@ -111,6 +111,7 @@ map.on("load", async function () {
   // });
 
   // all items from definitions to an array
+  // biome-ignore lint/style/useConst: needed to be a let to reassign later
   let definitionsArr;
 
   // definitions as tags
@@ -120,7 +121,7 @@ map.on("load", async function () {
   definitionsArr.forEach((item) => {
     for (const i of item) {
       const itemSeparated = i.split("=");
-      const result = itemSeparated[0] + "_" + itemSeparated[1].trim();
+      const result = `${itemSeparated[0]}_${itemSeparated[1].trim()}`;
       allTags.push(result);
     }
   });
@@ -167,11 +168,11 @@ map.on("load", async function () {
 
 // get data on map zoom - could be good to only show the form on a more apropriate zoom range
 
-function delay(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
+// function delay(ms) {
+//   return new Promise((resolve) => {
+//     setTimeout(resolve, ms);
+//   });
+// }
 
 async function getAmenitiesByBbox(tagsObj) {
   let bbox = map.getBounds();
@@ -191,26 +192,26 @@ async function getAmenitiesByBbox(tagsObj) {
       // console.log(Object.values(tagsObj)[0][0]);
       // console.log(response.elements);
 
-      let category = Object.keys(tags)[0];
-      let featureName = Object.values(tags)[0][0];
+      const category = Object.keys(tags)[0];
+      const featureName = Object.values(tags)[0][0];
       //console.log("new layer name:", `layer_${category}_${featureName}`);
 
       if (response.elements.length != 0) {
-        console.log(`${featureName} has ${response.elements.length} items.`);
+        // console.log(`${featureName} has ${response.elements.length} items.`);
         // activeLayersNames.push(`layer_${category}_${featureName}`);
-        let items = [];
-        let geo = {};
+        const items = [];
+        const geo = {};
 
         const rightPanel = document.querySelector(".overlay.right");
 
-        geo["type"] = "FeatureCollection";
-        geo["features"] = [];
+        geo.type = "FeatureCollection";
+        geo.features = [];
 
         // clear the array
         items.length = 0;
         items.push(...response.elements);
         items.forEach((item) => {
-          geo["features"].push(toFeature(item));
+          geo.features.push(toFeature(item));
         });
 
         geo.features.forEach((marker) => {
@@ -218,7 +219,7 @@ async function getAmenitiesByBbox(tagsObj) {
           const el = document.createElement("div");
           el.classList = `marker layer_${category}_${featureName}`;
           el.addEventListener("click", () => {
-            console.log(marker.properties);
+            // console.log(marker.properties);
             if (rightPanel !== null) {
               rightPanel.classList.add("open");
             }
@@ -299,7 +300,7 @@ featuresForm.addEventListener("change", (e) => {
   const featureType = e.target.getAttribute("name");
 
   if (e.target.checked) {
-    console.log("item checked:", featureType);
+    //console.log("item checked:", featureType);
     activeFeatureItems.length = 0;
     activeFeatureItems = tagsToObjects(definitions[featureType]);
 
@@ -310,7 +311,7 @@ featuresForm.addEventListener("change", (e) => {
       featureNames.push(featureName);
 
       const interval = 5000;
-      setTimeout(function () {
+      setTimeout(() => {
         // console.log(featureName);
         // map.zoomTo(15, {
         // 	duration: 2000,
@@ -321,18 +322,20 @@ featuresForm.addEventListener("change", (e) => {
     });
 
     for (const item of activeFeatureItems) {
+      // biome-ignore lint/style/useConst: need to be blank
       let name;
       name = `layer_${Object.keys(item)}_${Object.values(item)}`;
       activeLayersNames.push(name);
     }
 
-    console.log("active feature items:", activeFeatureItems);
-    console.log("active layers:", activeLayersNames);
+    // console.log("active feature items:", activeFeatureItems);
+    // console.log("active layers:", activeLayersNames);
   } else {
     const removedItemObj = tagsToObjects(definitions[featureType]);
-    console.log("object unchecked:", removedItemObj);
+    //console.log("object unchecked:", removedItemObj);
 
     for (const item of removedItemObj) {
+      // biome-ignore lint/style/useConst: need to be blank
       let name;
       name = `layer_${Object.keys(item)}_${Object.values(item)}`;
       inactiveLayers.push(name);
@@ -360,15 +363,16 @@ document.addEventListener("click", (e) => {
   }
 });
 
-map.on("zoom", function () {
-  console.log(map.getBounds());
-  console.log(map.getZoom());
-});
+// map.on("zoom", function () {
+//   console.log(map.getBounds());
+//   console.log(map.getZoom());
+// });
 
-const paramsObj = {
-  lat: initialPosition.lat,
-  lon: initialPosition.lon,
-};
+// const paramsObj = {
+//   lat: initialPosition.lat,
+//   lon: initialPosition.lon,
+// };
+
 const searchParams = new URLSearchParams(
   `lat=${initialPosition.lat}&lon=${initialPosition.lon}`,
 );
