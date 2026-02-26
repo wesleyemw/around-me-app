@@ -1,3 +1,4 @@
+// biome-ignore assist/source/organizeImports: not organized
 import maplibregl from "maplibre-gl";
 import OpacityControl from "maplibre-gl-opacity";
 import { OverpassClient } from "@andreasnicolaou/overpass-client";
@@ -64,7 +65,11 @@ map.on("load", async () => {
   };
 
   // OpacityControl
+<<<<<<< HEAD
+  let Opacity = new OpacityControl({
+=======
   const Opacity = new OpacityControl({
+>>>>>>> main
     // baseLayers: mapBaseLayer,
     overLayers: mapOverLayer,
     opacityControl: true,
@@ -72,7 +77,11 @@ map.on("load", async () => {
   map.addControl(Opacity, "bottom-left");
 
   // NavigationControl
+<<<<<<< HEAD
+  let nc = new maplibregl.NavigationControl({
+=======
   const nc = new maplibregl.NavigationControl({
+>>>>>>> main
     visualizePitch: true,
     showZoom: true,
     showCompass: true,
@@ -80,7 +89,11 @@ map.on("load", async () => {
   map.addControl(nc, "top-right");
 
   // Add geolocate control to the map.
+<<<<<<< HEAD
+  let locate = new maplibregl.GeolocateControl({
+=======
   const locate = new maplibregl.GeolocateControl({
+>>>>>>> main
     positionOptions: {
       enableHighAccuracy: true,
     },
@@ -111,7 +124,10 @@ map.on("load", async () => {
   // });
 
   // all items from definitions to an array
+<<<<<<< HEAD
+=======
   // biome-ignore lint/style/useConst: needed to be a let to reassign later
+>>>>>>> main
   let definitionsArr;
 
   // definitions as tags
@@ -121,7 +137,11 @@ map.on("load", async () => {
   definitionsArr.forEach((item) => {
     for (const i of item) {
       const itemSeparated = i.split("=");
+<<<<<<< HEAD
+      const result = itemSeparated[0] + "_" + itemSeparated[1].trim();
+=======
       const result = `${itemSeparated[0]}_${itemSeparated[1].trim()}`;
+>>>>>>> main
       allTags.push(result);
     }
   });
@@ -168,6 +188,17 @@ map.on("load", async () => {
 
 // get data on map zoom - could be good to only show the form on a more apropriate zoom range
 
+<<<<<<< HEAD
+function delay(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+async function getAmenitiesByBbox(tagsObj) {
+  let bbox = map.getBounds();
+  let points = {
+=======
 // function delay(ms) {
 //   return new Promise((resolve) => {
 //     setTimeout(resolve, ms);
@@ -177,6 +208,7 @@ map.on("load", async () => {
 async function getAmenitiesByBbox(tagsObj) {
   const bbox = map.getBounds();
   const points = {
+>>>>>>> main
     minLat: bbox._sw.lat,
     minLon: bbox._sw.lng,
     maxLat: bbox._ne.lat,
@@ -192,6 +224,22 @@ async function getAmenitiesByBbox(tagsObj) {
       // console.log(Object.values(tagsObj)[0][0]);
       // console.log(response.elements);
 
+<<<<<<< HEAD
+      let category = Object.keys(tags)[0];
+      let featureName = Object.values(tags)[0][0];
+      //console.log("new layer name:", `layer_${category}_${featureName}`);
+
+      if (response.elements.length != 0) {
+        console.log(`${featureName} has ${response.elements.length} items.`);
+        // activeLayersNames.push(`layer_${category}_${featureName}`);
+        let items = [];
+        let geo = {};
+
+        const rightPanel = document.querySelector(".overlay.right");
+
+        geo["type"] = "FeatureCollection";
+        geo["features"] = [];
+=======
       const category = Object.keys(tags)[0];
       const featureName = Object.values(tags)[0][0];
       //console.log("new layer name:", `layer_${category}_${featureName}`);
@@ -206,12 +254,17 @@ async function getAmenitiesByBbox(tagsObj) {
 
         geo.type = "FeatureCollection";
         geo.features = [];
+>>>>>>> main
 
         // clear the array
         items.length = 0;
         items.push(...response.elements);
         items.forEach((item) => {
+<<<<<<< HEAD
+          geo["features"].push(toFeature(item));
+=======
           geo.features.push(toFeature(item));
+>>>>>>> main
         });
 
         geo.features.forEach((marker) => {
@@ -219,7 +272,11 @@ async function getAmenitiesByBbox(tagsObj) {
           const el = document.createElement("div");
           el.classList = `marker layer_${category}_${featureName}`;
           el.addEventListener("click", () => {
+<<<<<<< HEAD
+            console.log(marker.properties);
+=======
             // console.log(marker.properties);
+>>>>>>> main
             if (rightPanel !== null) {
               rightPanel.classList.add("open");
             }
@@ -300,7 +357,11 @@ featuresForm.addEventListener("change", (e) => {
   const featureType = e.target.getAttribute("name");
 
   if (e.target.checked) {
+<<<<<<< HEAD
+    console.log("item checked:", featureType);
+=======
     //console.log("item checked:", featureType);
+>>>>>>> main
     activeFeatureItems.length = 0;
     activeFeatureItems = tagsToObjects(definitions[featureType]);
 
@@ -311,7 +372,11 @@ featuresForm.addEventListener("change", (e) => {
       featureNames.push(featureName);
 
       const interval = 5000;
+<<<<<<< HEAD
+      setTimeout(function () {
+=======
       setTimeout(() => {
+>>>>>>> main
         // console.log(featureName);
         // map.zoomTo(15, {
         // 	duration: 2000,
@@ -322,12 +387,24 @@ featuresForm.addEventListener("change", (e) => {
     });
 
     for (const item of activeFeatureItems) {
+<<<<<<< HEAD
+=======
       // biome-ignore lint/style/useConst: need to be blank
+>>>>>>> main
       let name;
       name = `layer_${Object.keys(item)}_${Object.values(item)}`;
       activeLayersNames.push(name);
     }
 
+<<<<<<< HEAD
+    console.log("active feature items:", activeFeatureItems);
+    console.log("active layers:", activeLayersNames);
+  } else {
+    const removedItemObj = tagsToObjects(definitions[featureType]);
+    console.log("object unchecked:", removedItemObj);
+
+    for (const item of removedItemObj) {
+=======
     // console.log("active feature items:", activeFeatureItems);
     // console.log("active layers:", activeLayersNames);
   } else {
@@ -336,6 +413,7 @@ featuresForm.addEventListener("change", (e) => {
 
     for (const item of removedItemObj) {
       // biome-ignore lint/style/useConst: need to be blank
+>>>>>>> main
       let name;
       name = `layer_${Object.keys(item)}_${Object.values(item)}`;
       inactiveLayers.push(name);
@@ -357,12 +435,27 @@ document.addEventListener("click", (e) => {
     }
   }
   // toggle overlays elements
+<<<<<<< HEAD
+  if (e.target.dataset.toggle == "overlay") {
+=======
   if (e.target.dataset.toggle === "overlay") {
+>>>>>>> main
     const parent = e.target.parentNode;
     parent.classList.toggle("open");
   }
 });
 
+<<<<<<< HEAD
+map.on("zoom", function () {
+  console.log(map.getBounds());
+  console.log(map.getZoom());
+});
+
+const paramsObj = {
+  lat: initialPosition.lat,
+  lon: initialPosition.lon,
+};
+=======
 // map.on("zoom", function () {
 //   console.log(map.getBounds());
 //   console.log(map.getZoom());
@@ -373,6 +466,7 @@ document.addEventListener("click", (e) => {
 //   lon: initialPosition.lon,
 // };
 
+>>>>>>> main
 const searchParams = new URLSearchParams(
   `lat=${initialPosition.lat}&lon=${initialPosition.lon}`,
 );
