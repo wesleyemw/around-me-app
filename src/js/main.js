@@ -4,9 +4,12 @@ import { OverpassClient } from "@andreasnicolaou/overpass-client";
 import { toFeature } from "./modules/utils";
 import definitions from "./modules/definitions";
 
+const urlSearchParams = new URLSearchParams(window.location.search);
+const params = Object.fromEntries(urlSearchParams.entries());
+
 const initialPosition = {
-  lon: 2.349014,
-  lat: 48.864716,
+  lon: params.lon,
+  lat: params.lat,
 };
 
 const map = new maplibregl.Map({
@@ -373,11 +376,11 @@ document.addEventListener("click", (e) => {
 //   lon: initialPosition.lon,
 // };
 
-const searchParams = new URLSearchParams(
-  `lat=${initialPosition.lat}&lon=${initialPosition.lon}`,
-);
+// const searchParams = new URLSearchParams(
+//   `lat=${initialPosition.lat}&lon=${initialPosition.lon}`,
+// );
 
-window.history.replaceState({}, "", `${location.pathname}?${searchParams}`);
+// window.history.replaceState({}, "", `${location.pathname}?${searchParams}`);
 
 //console.log(document.URL);
 // check this example to understand how to update the map dinamicaly
