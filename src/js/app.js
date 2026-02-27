@@ -49,6 +49,8 @@
 
       const populateSearchEl = (data) => {
         let itemHTML = () => {
+          // clean the result list element before inserting new content
+          resultList.textContent = "";
           for (const city of data) {
             let listContainer = document.createElement("article");
             listContainer.dataset.id = `${city.name}`;
