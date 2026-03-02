@@ -1,0 +1,27 @@
+@import "./_global.css"; 
+
+#home {
+    header, section {
+        min-height: 50vh;
+    }
+    header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+        background-image: url('../images/banner-base-01.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    #search-results {
+        margin: 0 auto;
+        width: 90%;
+        max-width: 55rem;
+        max-height: 30vh;
+        overflow-y: auto;
+    }
+    section {
+
+    }
+}

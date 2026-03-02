@@ -1,9 +1,8 @@
 form.features {
-    fieldgroup {
+    fieldset {
         display: block;
         border: solid 0.1rem #f0f;
     }
-
 }
 .check-group {
     display: flex;

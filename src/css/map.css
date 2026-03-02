@@ -1,8 +1,15 @@
-main {
+@import "maplibre-gl/dist/maplibre-gl.css";
+@import "./_global.css";
+@import "./_form.css";
+
+main#map {
     /* display: grid; */
     /* grid-template-areas: 'map'; */
     /* grid-template-columns: repeat(3, 1fr); */
     position: relative;
+    background-image: url('../images/banner-base-01.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 /* main > * {
     place-items: center;
