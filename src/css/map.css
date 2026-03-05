@@ -1,6 +1,5 @@
 @import "maplibre-gl/dist/maplibre-gl.css";
 @import "./_global.css";
-@import "./_typography.css";
 @import "./_form.css";
 
 main#map {

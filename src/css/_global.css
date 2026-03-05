@@ -1,3 +1,6 @@
+
+@import "./_typography.css";
+
 :root {
     --color-marker: royalblue;
     --color-marker-food: orange;
@@ -10,4 +13,16 @@
     --color-marker-groceries: seagreen;
 
     --color-marker-fill: #fff;
+}
+
+
+h1, h2, h3 {
+    font-family: 'HostGrotesk', var(--font-fallback);
+    font-weight: 625;
+    font-stretch: 115%;
+}
+
+p {
+    font-family: 'PlexSans', var(--font-fallback);
+    font-weight: 425;
 }
