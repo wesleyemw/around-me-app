@@ -14,7 +14,7 @@ const initialPosition = {
 
 const map = new maplibregl.Map({
   container: "map", // container id
-  style: "https://tiles.openfreemap.org/styles/bright",
+  style: "https://tiles.openfreemap.org/styles/positron",
   // paris starting position
   center: [initialPosition.lon, initialPosition.lat],
   zoom: 15,
@@ -222,7 +222,7 @@ async function getAmenitiesByBbox(tagsObj) {
           const el = document.createElement("div");
           el.classList = `marker layer_${category}_${featureName}`;
           el.addEventListener("click", () => {
-            // console.log(marker.properties);
+            console.log(marker.properties);
             if (rightPanel !== null) {
               rightPanel.classList.add("open");
             }
