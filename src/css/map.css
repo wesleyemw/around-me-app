@@ -139,6 +139,11 @@ main#map {
         mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 19" height="19" width="19"><title>restaurant.svg</title><rect fill="none" x="0" y="0" width="19" height="19"></rect><path fill="var(--color-marker-fill)" transform="translate(2 2)" d="M3.5,0l-1,5.5c-0.1464,0.805,1.7815,1.181,1.75,2L4,14c-0.0384,0.9993,1,1,1,1s1.0384-0.0007,1-1L5.75,7.5c-0.0314-0.8176,1.7334-1.1808,1.75-2L6.5,0H6l0.25,4L5.5,4.5L5.25,0h-0.5L4.5,4.5L3.75,4L4,0H3.5z M12,0c-0.7364,0-1.9642,0.6549-2.4551,1.6367C9.1358,2.3731,9,4.0182,9,5v2.5c0,0.8182,1.0909,1,1.5,1L10,14c-0.0905,0.9959,1,1,1,1	s1,0,1-1V0z"></path></svg>');
     }
 }
+.marker.layer_amenity_fast_food {
+        &::before {
+        mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19"><title>fast-food.svg</title><path fill="none" d="M0 0h19v19H0z"/><path fill="var(--color-marker-fill)" d="M16 10a1 1 0 0 1-1 1H4a1 1 0 1 1 0-2h11a1 1 0 0 1 1 1M5.5 12H4a3 3 0 0 0 3 3h5a3 3 0 0 0 3-3zM5 8H4V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v2zm8-1.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m-2-1a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m-2 1a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m-2-1a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m-2 1a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0"/></svg>');
+    }
+}
 .marker.layer_amenity_bar {
     &::before {
         mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19"><title>bar.svg</title><path fill="none" d="M0 0h19v19H0z"/><path fill="var(--color-marker-fill)" d="M9.5 3c-2 0-7 .25-6.5.75L9 10v4c0 1-3 .5-3 2h7c0-1.5-3-1-3-2v-4l6-6.25c.5-.5-4.5-.75-6.5-.75m0 1c2.5 0 4.75.25 4.75.25L13.5 5h-8l-.75-.75S7 4 9.5 4"/></svg>');
@@ -153,6 +158,11 @@ main#map {
 .marker.layer_amenity_cafe,
 .marker.layer_shop_bakery {
     background-color: var(--color-marker-cafe);
+}
+.marker.layer_amenity_cafe {
+    &::before {
+        mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19"><title>cafe.svg</title><path fill="none" d="M0 0h19v19H0z"/><path fill="var(--color-marker-fill)" d="M14 7h-2V5H4v4a4 4 0 0 0 7.45 2H14a2 2 0 1 0 0-4m0 3h-2.14A4 4 0 0 0 12 9V8h2a1 1 0 1 1 0 2m-2 4.5a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5"/></svg>');
+    }
 }
 .marker.layer_shop_supermarket,
 .marker.layer_shop_greengrocer,
