@@ -3,7 +3,7 @@
     --color-marker-food: orange;
     --color-marker-cafe: darkred;
     --color-marker-dessert: purple;
-    --color-marker-bus: blue;
+    --color-marker-bus: oklch(0.452 0.313214 264.052);
     --color-marker-rail: darkturquoise;
     --color-marker-utils: sandybrown;
     --color-marker-health: orangered;
