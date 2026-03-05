@@ -7,9 +7,6 @@ main#map {
     /* grid-template-areas: 'map'; */
     /* grid-template-columns: repeat(3, 1fr); */
     position: relative;
-    background-image: url('../images/banner-base-01.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
 }
 /* main > * {
     place-items: center;
