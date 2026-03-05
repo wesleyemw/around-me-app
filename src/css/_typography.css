@@ -24,7 +24,7 @@
 @font-face {
     font-family: 'HostGrotesk';
     src: 
-        url('../fonts/HostGrotesk[wght].ttf') format('ttf supports variations');
+        url('../fonts/HostGrotesk-Variable-Roman.woff2') format('woff2 supports variations');
     font-weight: 100 1000;
     font-display: swap;
 }
@@ -32,7 +32,7 @@
 @font-face {
     font-family: 'HostGroteskItalic';
     src: 
-        url('../fonts/HostGrotesk-Italic[wght].ttf') format('ttf supports variations');
+        url('../fonts/HostGrotesk-VariabIe-Italic.woff2') format('woff2 supports variations');
     font-weight: 100 1000;
     font-display: swap;
 }
