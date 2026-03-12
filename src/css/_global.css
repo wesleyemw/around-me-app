@@ -26,3 +26,20 @@ p {
     font-family: 'PlexSans', var(--font-fallback);
     font-weight: 425;
 }
+/* animate popover entry */
+[popover] {
+    display: none;
+    opacity: 0;
+    transition: 
+        opacity 300ms,
+        display 300ms allow-discrete,
+        overlay 300ms allow-discrete;
+    transition-behavior: allow-discrete;
+    &:popover-open {
+        display: block;
+        opacity: 1;
+        @starting-style {
+            opacity: 0;
+        }
+    }
+}

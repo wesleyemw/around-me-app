@@ -42,8 +42,9 @@
         event.preventDefault();
         const result = input.value;
         const response = await app.getData(result);
-        console.log(response);
+        // console.log(response);
         populateSearchEl(response);
+        resultList.togglePopover();
       };
       form.addEventListener("submit", submitHandler);
 
