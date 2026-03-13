@@ -366,17 +366,21 @@ document.addEventListener("click", (e) => {
   }
 });
 
-map.on("zoom", () => {
-  const zoom = map.getZoom();
-  // store this in a config object
-  const minZoom = 15.2;
-  console.log(zoom);
-  if (zoom < minZoom) {
-    console.log("this zoom is not acceptable", zoom);
-  } else {
-    console.log("Good to go", zoom);
-  }
-});
+const testZoom = () => {
+  map.on("zoom", () => {
+    const zoom = map.getZoom();
+    // store this in a config object
+    const minZoom = 15.2;
+    console.log(zoom);
+    if (zoom < minZoom) {
+      console.log("this zoom is not acceptable", zoom);
+    } else {
+      console.log("Good to go", zoom);
+    }
+  });
+};
+
+testZoom();
 
 // const paramsObj = {
 //   lat: initialPosition.lat,
