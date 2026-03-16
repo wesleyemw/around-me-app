@@ -4,7 +4,15 @@ import { OverpassClient } from "@andreasnicolaou/overpass-client";
 import { toFeature } from "./modules/utils";
 import definitions from "./modules/definitions";
 
+import FeatureSidebar from "./components/FeatureSidebar";
+
 (async () => {
+  // TODO: Move this to a proxy store
+  window.utils = {};
+  utils = {
+    clickedMarker: null,
+  };
+
   const urlSearchParams = new URLSearchParams(window.location.search);
   const params = Object.fromEntries(urlSearchParams.entries());
 
@@ -222,8 +230,20 @@ import definitions from "./modules/definitions";
             // create a DOM element for the marker
             const el = document.createElement("div");
             el.classList = `marker layer_${category}_${featureName}`;
-            el.addEventListener("click", () => {
-              console.log(marker.properties);
+            el.addEventListener("click", async () => {
+              // elAttribute = JSON.stringify(marker);
+              window.utils.clickedMarker = await marker; // console.log(utils.clickedMarker);
+
+              let pageElement = null;
+              pageElement = document.createElement("feature-sidebar");
+              const featureEl = rightPanel.querySelector("feature-sidebar");
+              if (featureEl !== null) {
+                rightPanel.removeChild(featureEl);
+                rightPanel.appendChild(pageElement);
+              } else {
+                rightPanel.appendChild(pageElement);
+              }
+
               if (rightPanel !== null) {
                 rightPanel.classList.add("open");
               }
@@ -369,33 +389,25 @@ import definitions from "./modules/definitions";
     }
   });
 
-  const testZoom = () => {
-    map.on("zoom", () => {
-      const zoom = map.getZoom();
-      // store this in a config object
-      const minZoom = 15.2;
-      console.log(zoom);
-      if (zoom < minZoom) {
-        console.log("this zoom is not acceptable", zoom);
-      } else {
-        console.log("Good to go", zoom);
-      }
-    });
-  };
-
-  testZoom();
+  // document.addEventListener("DOMContentLoaded", () => {
+  // });
 })();
 
-// const paramsObj = {
-//   lat: initialPosition.lat,
-//   lon: initialPosition.lon,
+// const testZoom = () => {
+//   map.on("zoom", () => {
+//     const zoom = map.getZoom();
+//     // store this in a config object
+//     const minZoom = 15.2;
+//     console.log(zoom);
+//     if (zoom < minZoom) {
+//       console.log("this zoom is not acceptable", zoom);
+//     } else {
+//       console.log("Good to go", zoom);
+//     }
+//   });
 // };
 
-// const searchParams = new URLSearchParams(
-//   `lat=${initialPosition.lat}&lon=${initialPosition.lon}`,
-// );
-
-// window.history.replaceState({}, "", `${location.pathname}?${searchParams}`);
+// testZoom();
 
 //console.log(document.URL);
 // check this example to understand how to update the map dinamicaly
