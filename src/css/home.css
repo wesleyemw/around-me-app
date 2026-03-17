@@ -1,9 +1,13 @@
 @import "./_global.css"; 
 
-#home {
-    header, section {
-        min-height: 50vh;
-    }
+.home-content {
+    /* header, section {
+        min-height: 45vh;
+    } */
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    place-content: stretch;
+    min-height: 100dvh;
     header {
         display: flex;
         flex-direction: column;
@@ -14,20 +18,34 @@
         background-repeat: no-repeat;
         background-size: cover;
         /* anchor positioning */
-        anchor-name: --header-anchor;
+        #search-cities {
+            anchor-name: --header-anchor;
+        }
+    }
+    section.projects {
+        /* flex: 1 1 50%; */
     }
     #search-results {
         /* position: fixed;
         top: 50%;
         left: 50%;
         margin: 0 auto; */
+        border: solid 0.1rem #000;
         margin: 0;
+        margin-top: 2em;
         padding: 2em;
         width: 90%;
         max-width: 55rem;
         max-height: 30vh;
         overflow-y: auto;
+        position: absolute;
         position-anchor: --header-anchor;
-        position-area: bottom;
+        position-area: y-end span-all;
+        & article {
+            margin-block-start: 1em;
+            a {
+                text-decoration: none;
+            }
+        }
     }
 }

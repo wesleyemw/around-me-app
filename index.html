@@ -9,12 +9,7 @@
     <script src="./src/js/app.js" type="module"></script>
   </head>
   <body>
-    <main id="home">
-      <!-- 
-      <nav>
-        <a href="pages/map/">map</a>
-      </nav>
-      -->
+    <div class="home-content">
       <header>
         <h2>Create a new map</h2>
         <form id="search-cities">
@@ -23,17 +18,24 @@
         </form>
         <!-- search resul element -->
         <section id="search-results" popover></section>
-
         <template>
           <dialog popover></dialog>
         </template>
       </header>
-      <section>
-        <hgroup>
-          <h3>Saved maps</h3>
-        </hgroup>
-        <p>You don't have any maps yet.</p>
-      </section>
-    </main>
+      <main id="home">
+        <!--
+        <nav>
+          <a href="pages/map/">map</a>
+        </nav>
+        -->
+
+        <section class="projects">
+          <hgroup>
+            <h3>Saved maps</h3>
+          </hgroup>
+          <p>You don't have any maps yet.</p>
+        </section>
+      </main>
+    </div>
   </body>
 </html>

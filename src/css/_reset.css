@@ -16,6 +16,7 @@ html {
 /* Remove default margin in favour of better control in authored CSS */
 body, h1, h2, h3, h4, p,
 figure, blockquote, dl, dd {
+    margin-block-start: 0;
   margin-block-end: 0;
 }
 
@@ -27,8 +28,10 @@ ol[role='list'] {
 
 /* Set core body defaults */
 body {
-  min-height: 100vh;
+  /* min-height: 100dvh; */
   line-height: 1.5;
+  border: none;
+  margin: 0;
 }
 
 /* Set shorter line heights on headings and interactive elements */
