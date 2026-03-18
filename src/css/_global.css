@@ -14,6 +14,8 @@
     --color-marker-groceries: seagreen;
 
     --color-marker-fill: #fff;
+
+    --spacer: 1rem;
 }
 
 html {
