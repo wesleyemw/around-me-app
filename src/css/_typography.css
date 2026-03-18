@@ -1,24 +1,14 @@
+@import "../../node_modules/inter-ui/inter-variable.css";
+
 :root {
-  --font-fallback: system-ui, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+  --font-fallback-text: system-ui, BlinkMacSystemFont,"Arial", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-sans;
+    --font-fallback-headings: system-ui, BlinkMacSystemFont, "Arial", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-sans;
 }
 
-@font-face {
-    font-family: 'PlexSans';
-    src: 
-        url('../fonts/IBM Plex Sans Var-Roman.woff2') format('woff2 supports variations'),
-        url('../fonts/IBM Plex Sans Var-Roman.woff2') format('woff2-variations');
-    font-weight: 100 1000;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'PlexSansItalic';
-    src: 
-        url('../fonts/IBM Plex Sans Var-Roman.woff2') format('woff2 supports variations'),
-        url('../fonts/IBM Plex Sans Var-Roman.woff2') format('woff2-variations');
-    font-weight: 100 1000;
-    font-display: swap;
+@supports (font-variation-settings: normal) {
+  html { font-family: "InterVariable", var(--font-fallback-text); } /* If using the variable font */
 }
 
 @font-face {

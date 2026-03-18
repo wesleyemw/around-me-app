@@ -16,16 +16,15 @@
     --color-marker-fill: #fff;
 }
 
-
-h1, h2, h3 {
-    font-family: 'HostGrotesk', var(--font-fallback);
-    font-weight: 625;
-    font-stretch: 115%;
+html {
+    font-family: 'InterVariable', var(--font-fallback-text);
+    font-weight: 400;
 }
 
-p {
-    font-family: 'PlexSans', var(--font-fallback);
-    font-weight: 425;
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'HostGrotesk', var(--font-fallback-headings);
+    font-weight: 625;
+    font-stretch: 100%;
 }
 /* animate popover entry */
 [popover] {

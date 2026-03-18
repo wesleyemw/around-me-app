@@ -22,9 +22,6 @@
             anchor-name: --header-anchor;
         }
     }
-    section.projects {
-        /* flex: 1 1 50%; */
-    }
     #search-results {
         /* position: fixed;
         top: 50%;
