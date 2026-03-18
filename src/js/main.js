@@ -1,5 +1,6 @@
 import maplibregl from "maplibre-gl";
-import OpacityControl from "maplibre-gl-opacity";
+import StyleFlipperControl from "maplibre-gl-style-flipper";
+
 import { OverpassClient } from "@andreasnicolaou/overpass-client";
 import { toFeature } from "./modules/utils";
 import definitions from "./modules/definitions";
@@ -21,68 +22,37 @@ import FeatureSidebar from "./components/FeatureSidebar";
     lat: params.lat,
   };
 
+  // Define map styles
+  const mapStyles = {
+    "carto-positron": {
+      code: "carto-positron",
+      url: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+      image:
+        "https://carto.com/help/images/building-maps/basemaps/positron_labels.png",
+    },
+    "carto-dark": {
+      code: "carto-dark",
+      url: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
+      image:
+        "https://carto.com/help/images/building-maps/basemaps/dark_labels.png",
+    },
+    "carto-voyager": {
+      code: "carto-voyager",
+      url: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
+      image:
+        "https://carto.com/help/images/building-maps/basemaps/voyager_labels.png",
+    },
+  };
+
   const map = new maplibregl.Map({
     container: "map", // container id
-    style: "https://tiles.openfreemap.org/styles/positron",
+    style: mapStyles["carto-positron"].url, // Default style
     // paris starting position
     center: [initialPosition.lon, initialPosition.lat],
     zoom: 15.2,
   });
 
   map.on("load", async () => {
-    const image = await map.loadImage(
-      "https://maplibre.org/maplibre-gl-js/docs/assets/custom_marker.png",
-    );
-    // Add an image to use as a custom marker
-    map.addImage("custom-marker", image.data);
-    // GSI Pale
-    map.addSource("t_pale", {
-      type: "raster",
-      tiles: ["https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png"],
-      tileSize: 256,
-    });
-    map.addLayer({
-      id: "t_pale",
-      type: "raster",
-      source: "t_pale",
-      minzoom: 0,
-      maxzoom: 22,
-    });
-
-    // GSI Ort
-    map.addSource("t_ort", {
-      type: "raster",
-      tiles: ["https://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg"],
-      tileSize: 256,
-    });
-    map.addLayer({
-      id: "t_ort",
-      type: "raster",
-      source: "t_ort",
-      minzoom: 0,
-      maxzoom: 22,
-    });
-
-    // BaseLayer
-    // const mapBaseLayer = {
-    //     o_std: 'Open Street Maps',
-    //     m_color: 'MIERUNE Color',
-    // };
-
-    // OverLayer
-    const mapOverLayer = {
-      t_pale: "GSI Pale",
-      t_ort: "GSI Ort",
-    };
-
-    // OpacityControl
-    const Opacity = new OpacityControl({
-      // baseLayers: mapBaseLayer,
-      overLayers: mapOverLayer,
-      opacityControl: true,
-    });
-    map.addControl(Opacity, "bottom-left");
-
     // NavigationControl
     const nc = new maplibregl.NavigationControl({
       visualizePitch: true,
@@ -90,6 +60,15 @@ import FeatureSidebar from "./components/FeatureSidebar";
       showCompass: true,
     });
     map.addControl(nc, "top-right");
+
+    // Create an instance of StyleFlipperControl
+    const styleFlipperControl = new StyleFlipperControl(mapStyles);
+
+    // Set the initial style code
+    styleFlipperControl.setCurrentStyleCode("carto-positron");
+
+    // Add the control to the map
+    map.addControl(styleFlipperControl, "bottom-left");
 
     // Add geolocate control to the map.
     const locate = new maplibregl.GeolocateControl({
@@ -402,7 +381,7 @@ import FeatureSidebar from "./components/FeatureSidebar";
 //     if (zoom < minZoom) {
 //       console.log("this zoom is not acceptable", zoom);
 //     } else {
-//       console.log("Good to go", zoom);
+//       console.log("Good to go", zoom);navi
 //     }
 //   });
 // };

@@ -17,7 +17,7 @@
   "devDependencies": {
     "@andreasnicolaou/overpass-client": "^1.2.0",
     "@biomejs/biome": "2.4.4",
-    "maplibre-gl-opacity": "^1.8.0",
+    "maplibre-gl-style-flipper": "^1.0.9",
     "vite": "^7.1.7"
   },
   "dependencies": {
