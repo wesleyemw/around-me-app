@@ -17,8 +17,8 @@ export default class FeatureSidebar extends HTMLElement {
       // console.log(features);
       Object.keys(features).forEach((item) => {
         const listItem = document.createElement("li");
-        console.log("key:", item); // key
-        console.log("value", features[item]); // value
+        //console.log("key:", item); // key
+        //console.log("value", features[item]); // value
         listItem.dataset.key = item;
         listItem.textContent = `${item}: ${features[item]}`;
         this.root

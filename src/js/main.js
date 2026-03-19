@@ -176,70 +176,71 @@ import FeatureSidebar from "./components/FeatureSidebar";
     const tags = tagsObj;
     const overpassClient = new OverpassClient();
     const box = [points.minLat, points.minLon, points.maxLat, points.maxLon]; // [minLat, minLon, maxLat, maxLon]
-    const elements = ["node"];
-    overpassClient
-      .getElementsByBoundingBox(tags, box, elements)
-      .subscribe((response) => {
-        // console.log(Object.values(tagsObj)[0][0]);
-        // console.log(response.elements);
-
-        const category = Object.keys(tags)[0];
-        const featureName = Object.values(tags)[0][0];
-        //console.log("new layer name:", `layer_${category}_${featureName}`);
-
-        if (response.elements.length != 0) {
-          // console.log(`${featureName} has ${response.elements.length} items.`);
-          // activeLayersNames.push(`layer_${category}_${featureName}`);
-          const items = [];
-          const geo = {};
-
-          const rightPanel = document.querySelector(".overlay.right");
-
-          geo.type = "FeatureCollection";
-          geo.features = [];
-
-          // clear the array
-          items.length = 0;
-          items.push(...response.elements);
-          items.forEach((item) => {
-            geo.features.push(toFeature(item));
-          });
-
-          geo.features.forEach((marker) => {
-            // create a DOM element for the marker
-            const el = document.createElement("div");
-            el.classList = `marker layer_${category}_${featureName}`;
-            el.addEventListener("click", async () => {
-              // elAttribute = JSON.stringify(marker);
-              window.utils.clickedMarker = await marker; // console.log(utils.clickedMarker);
-
-              let pageElement = null;
-              pageElement = document.createElement("feature-sidebar");
-              const featureEl = rightPanel.querySelector("feature-sidebar");
-              if (featureEl !== null) {
-                rightPanel.removeChild(featureEl);
-                rightPanel.appendChild(pageElement);
-              } else {
-                rightPanel.appendChild(pageElement);
-              }
-
-              if (rightPanel !== null) {
-                rightPanel.classList.add("open");
-              }
-            });
-
-            // add marker to map
-            new maplibregl.Marker({ element: el })
-              .setLngLat(marker.geometry.coordinates)
-              .addTo(map);
-          });
-
-          const geoJSONcontent = geo;
-          map
-            .getSource(`layer_${category}_${featureName}`)
-            .setData(geoJSONcontent);
-        }
+    const elements = ["node", "way"];
+    overpassClient.getElementsByBoundingBox(tags, box).subscribe((response) => {
+      // console.log(Object.values(tagsObj)[0][0]);
+      const elementsResponse = response.elements;
+      elementsResponse.forEach((item) => {
+        console.log(item);
       });
+
+      const category = Object.keys(tags)[0];
+      const featureName = Object.values(tags)[0][0];
+      //console.log("new layer name:", `layer_${category}_${featureName}`);
+
+      if (response.elements.length !== 0) {
+        // console.log(`${featureName} has ${response.elements.length} items.`);
+        // activeLayersNames.push(`layer_${category}_${featureName}`);
+        const items = [];
+        const geo = {};
+
+        const rightPanel = document.querySelector(".overlay.right");
+
+        geo.type = "FeatureCollection";
+        geo.features = [];
+
+        // clear the array
+        items.length = 0;
+        items.push(...response.elements);
+        items.forEach((item) => {
+          geo.features.push(toFeature(item));
+        });
+
+        geo.features.forEach((marker) => {
+          // create a DOM element for the marker
+          const el = document.createElement("div");
+          el.classList = `marker layer_${category}_${featureName}`;
+          el.addEventListener("click", async () => {
+            // elAttribute = JSON.stringify(marker);
+            window.utils.clickedMarker = await marker; // console.log(utils.clickedMarker);
+
+            let pageElement = null;
+            pageElement = document.createElement("feature-sidebar");
+            const featureEl = rightPanel.querySelector("feature-sidebar");
+            if (featureEl !== null) {
+              rightPanel.removeChild(featureEl);
+              rightPanel.appendChild(pageElement);
+            } else {
+              rightPanel.appendChild(pageElement);
+            }
+
+            if (rightPanel !== null) {
+              rightPanel.classList.add("open");
+            }
+          });
+
+          // add marker to map
+          new maplibregl.Marker({ element: el })
+            .setLngLat(marker.geometry.coordinates)
+            .addTo(map);
+        });
+
+        const geoJSONcontent = geo;
+        map
+          .getSource(`layer_${category}_${featureName}`)
+          .setData(geoJSONcontent);
+      }
+    });
   }
 
   // function getAmenitiesByRadius(lat, lon) {
