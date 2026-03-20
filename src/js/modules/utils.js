@@ -8,6 +8,7 @@ function toFeature(obj) {
       },
       properties: {
         id: obj.id,
+        type: obj.type,
         ...obj.tags,
       },
     };
@@ -22,6 +23,7 @@ function toFeature(obj) {
       },
       properties: {
         id: obj.id,
+        type: obj.type,
         ...obj.tags,
       },
     };
