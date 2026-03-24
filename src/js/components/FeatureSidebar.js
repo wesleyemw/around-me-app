@@ -1,18 +1,9 @@
 export default class FeatureSidebar extends HTMLElement {
-  constructor() {
-    super();
-    this.root = this.attachShadow({ mode: "open" });
-
-    const template = document.querySelector("#feature-sidebar-template");
-    const content = template.content.cloneNode(true);
-    this.root.appendChild(content);
-  }
-
   async renderData() {
     const data = await window.utils.clickedMarker;
     // console.log(data.properties);
     if (data) {
-      this.root.querySelector("h3").textContent = data.properties.name;
+      this.querySelector("h3").textContent = data.properties.name;
       const features = data.properties;
       // console.log(features);
       Object.keys(features).forEach((item) => {
@@ -21,9 +12,10 @@ export default class FeatureSidebar extends HTMLElement {
         //console.log("value", features[item]); // value
         listItem.dataset.key = item;
         listItem.textContent = `${item}: ${features[item]}`;
-        this.root
-          .querySelector(".features")
-          .insertAdjacentElement("beforeend", listItem);
+        this.querySelector(".features").insertAdjacentElement(
+          "beforeend",
+          listItem,
+        );
       });
 
       //   features.forEach((item) => {
@@ -37,6 +29,10 @@ export default class FeatureSidebar extends HTMLElement {
   }
 
   connectedCallback() {
+    const template = document.querySelector("#feature-sidebar-template");
+    const content = template.content.cloneNode(true);
+    this.appendChild(content);
+
     this.renderData();
   }
 }
