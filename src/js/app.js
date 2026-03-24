@@ -1,7 +1,10 @@
+import CreateProject from "../js/components/CreateProject";
+
 (() => {
   window.app = {};
   app = {
     searchData: [],
+    clickedCity: {},
     getData: async (query) => {
       // const query = "Menton";
       const headers = {
@@ -53,25 +56,25 @@
           // clean the result list element before inserting new content
           resultList.textContent = "";
           for (const city of data) {
-            let listContainer = document.createElement("article");
-            listContainer.dataset.id = `${city.name}`;
-            listContainer.dataset.lat = `${city.latitude}`;
-            listContainer.dataset.lon = `${city.longitude}`;
-            listContainer.dataset.population = `${city.population}`;
-            listContainer.dataset.country = `${city.country}`;
-            listContainer.dataset.region = `${city.region}`;
+            let resultContainer = document.createElement("article");
+
+            resultContainer.dataset.id = `${city.name}`;
+            resultContainer.dataset.lat = `${city.latitude}`;
+            resultContainer.dataset.lon = `${city.longitude}`;
+            resultContainer.dataset.data = `${JSON.stringify(city)}`;
+            // resultContainer.dataset.population = `${city.population}`;
+            // resultContainer.dataset.country = `${city.country}`;
+            // resultContainer.dataset.region = `${city.region}`;
             const markup = `
-                <a href="/pages/map/?lat=${city.latitude}&lon=${city.longitude}">
                   <h3>${city.name}</h3>
                   <p>${city.country}</p>
                   <p>${city.region}</p>
                   <p><small>${city.population}</small></p>
-                </a>
             `;
-            listContainer.innerHTML = markup;
-            // console.log(listContainer);
+            resultContainer.innerHTML = markup;
+            // console.log(resultContainer);
 
-            resultList.insertAdjacentElement("beforeend", listContainer);
+            resultList.insertAdjacentElement("beforeend", resultContainer);
           }
         };
         itemHTML();
@@ -79,4 +82,16 @@
     },
   };
   app.getFormQuery();
+
+  let dialogElement = null;
+  const mainElement = document.querySelector("#home");
+  dialogElement = document.createElement("create-project");
+
+  mainElement.appendChild(dialogElement);
+
+  document.addEventListener("click", (evt) => {
+    if (evt.target.matches('[data-toggle="dialog"')) {
+      console.log("dialog needs to open");
+    }
+  });
 })();

@@ -30,14 +30,19 @@
       <header>
         <h2>Create a new map</h2>
         <form id="search-cities">
-          <input type="search" name="search-place" id="search-place" />
+          <label for="search-place">Search a place</label>
+          <input
+            type="search"
+            name="search-place"
+            id="search-place"
+            placeholder="City name"
+            min="3"
+            required
+          />
           <button type="submit">Search</button>
         </form>
         <!-- search resul element -->
         <section id="search-results" popover></section>
-        <template>
-          <dialog popover></dialog>
-        </template>
       </header>
       <main id="home">
         <!--
@@ -50,9 +55,28 @@
             <hgroup>
               <h3>Saved maps</h3>
             </hgroup>
-            <p>You don't have any maps yet.</p>
+            <p>You don't have any saved maps yet.</p>
           </div>
         </section>
+        <template id="create-project-template">
+          <dialog popover>
+            <form name="create-project">
+              <input
+                type="text"
+                name="project-name"
+                id="project-name"
+                min="3"
+                required
+              />
+              <div>
+                <h3></h3>
+                <p class="country-name"></p>
+                <p class="population"></p>
+              </div>
+              <button type="submit">Create</button>
+            </form>
+          </dialog>
+        </template>
       </main>
     </div>
   </body>
