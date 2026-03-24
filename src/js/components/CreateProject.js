@@ -6,6 +6,9 @@ export default class CreateProject extends HTMLElement {
     const template = document.querySelector("#create-project-template");
     const content = template.content.cloneNode(true);
     this.appendChild(content);
+
+    // const dialogEl = this.querySelector("dialog");
+    // dialogEl.setAttribute(this.id, window.app.dialogId);
   }
 }
 

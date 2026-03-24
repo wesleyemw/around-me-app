@@ -1,10 +1,12 @@
+import { slugify } from "../js/modules/utils";
 import CreateProject from "../js/components/CreateProject";
 
 (() => {
   window.app = {};
   app = {
     searchData: [],
-    clickedCity: {},
+    clickedCity: null,
+    dialogId: null,
     getData: async (query) => {
       // const query = "Menton";
       const headers = {
@@ -57,11 +59,16 @@ import CreateProject from "../js/components/CreateProject";
           resultList.textContent = "";
           for (const city of data) {
             let resultContainer = document.createElement("article");
+            // TODO: Create a utility function for this
+            const randomStr = Math.random().toString(36).slice(2, 10);
+            const id =
+              `${slugify(city.name, true)}-${city.countryCode}-${randomStr}`.toLowerCase();
 
+            resultContainer.dataset.name = `${id}`;
             resultContainer.dataset.id = `${city.name}`;
             resultContainer.dataset.lat = `${city.latitude}`;
             resultContainer.dataset.lon = `${city.longitude}`;
-            resultContainer.dataset.data = `${JSON.stringify(city)}`;
+            resultContainer.dataset.stats = `${JSON.stringify(city)}`;
             // resultContainer.dataset.population = `${city.population}`;
             // resultContainer.dataset.country = `${city.country}`;
             // resultContainer.dataset.region = `${city.region}`;
@@ -70,6 +77,7 @@ import CreateProject from "../js/components/CreateProject";
                   <p>${city.country}</p>
                   <p>${city.region}</p>
                   <p><small>${city.population}</small></p>
+                  <button data-toggle="dialog" command='show-modal' commandfor="${id}">Create map</button>
             `;
             resultContainer.innerHTML = markup;
             // console.log(resultContainer);
@@ -91,7 +99,13 @@ import CreateProject from "../js/components/CreateProject";
 
   document.addEventListener("click", (evt) => {
     if (evt.target.matches('[data-toggle="dialog"')) {
-      console.log("dialog needs to open");
+      const parentArticle = evt.target.closest("article");
+      const id = parentArticle.dataset.name;
+      app.dialogId = id;
+      app.clickedCity = parentArticle.dataset.stats;
+
+      console.log("dialog id:", app.dialogId);
+      console.log("stats:", app.clickedCity);
     }
   });
 })();

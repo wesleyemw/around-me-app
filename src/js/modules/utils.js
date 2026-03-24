@@ -1,4 +1,4 @@
-function toFeature(obj) {
+export const toFeature = (obj) => {
   if (obj.type === "node") {
     const newFeature = {
       type: "Feature",
@@ -29,6 +29,14 @@ function toFeature(obj) {
     };
     return newFeature;
   }
-}
+};
 
-export { toFeature };
+export const slugify = (sentence, lowercase) => {
+  const slug = sentence.replace(/\s/g, "-");
+  if (lowercase) {
+    return slug.toLowerCase();
+  }
+  return slug;
+};
+
+export default { toFeature, slugify };
