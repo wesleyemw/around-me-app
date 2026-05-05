@@ -106,6 +106,21 @@ import CreateProject from "../js/components/CreateProject";
 
       console.log("dialog id:", app.dialogId);
       console.log("stats:", app.clickedCity);
+
+      const dialogEl = document.querySelector('[data-dialog="project-dialog"]');
+
+      if (typeof dialogEl !== "undefined" && dialogEl !== null) {
+        // Exists.
+        dialogEl.setAttribute("id", app.dialogId);
+        const title = dialogEl.querySelector("h3");
+        const countryName = dialogEl.querySelector("p.country-name");
+        const population = dialogEl.querySelector("p.population");
+        const stats = JSON.parse(app.clickedCity);
+
+        title.textContent = stats.name;
+        countryName.textContent = stats.country;
+        population.textContent = stats.population;
+      }
     }
   });
 })();

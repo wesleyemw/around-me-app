@@ -29,7 +29,7 @@ h1, h2, h3, h4, h5, h6 {
     font-stretch: 100%;
 }
 /* animate popover entry */
-[popover] {
+/* [popover] {
     display: none;
     opacity: 0;
     transition: 
@@ -44,7 +44,7 @@ h1, h2, h3, h4, h5, h6 {
             opacity: 0;
         }
     }
-}
+} */
 
 .container {
     max-width: 95rem;

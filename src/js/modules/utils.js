@@ -39,4 +39,13 @@ export const slugify = (sentence, lowercase) => {
   return slug;
 };
 
+// export const renderDialog = async () => {
+//   const data = await window.app.clickedCity;
+//   const dialogEl = this.querySelector("dialog");
+
+//   const title = dialogEl.querySelector("h3");
+//   const countryName = dialogEl.querySelector(".country-name");
+//   const population = dialogEl.querySelector(".population");
+// };
+
 export default { toFeature, slugify };

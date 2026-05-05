@@ -45,4 +45,8 @@
             }
         }
     }
+    #project-dialog {
+        width: 50rem;
+        min-height: 30dvh;
+    }
 }
