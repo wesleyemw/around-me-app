@@ -60,18 +60,21 @@
         </section>
         <template id="create-project-template">
           <dialog data-dialog="project-dialog" popover>
-            <form name="create-project">
-              <input
-                type="text"
-                name="project-name"
-                id="project-name"
-                min="3"
-                required
-              />
-              <div>
+            <form name="create-project" action="/pages/map/">
+              <div class="field-group">
                 <h3></h3>
                 <p class="country-name"></p>
                 <p class="population"></p>
+              </div>
+              <div class="field-group">
+                <label for="project-name">Project name:</label>
+                <input
+                  type="text"
+                  name="project-name"
+                  id="project-name"
+                  min="3"
+                  required
+                />
               </div>
               <button type="submit">Create</button>
             </form>
