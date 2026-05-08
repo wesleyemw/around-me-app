@@ -104,22 +104,42 @@ import CreateProject from "../js/components/CreateProject";
       app.dialogId = id;
       app.clickedCity = parentArticle.dataset.stats;
 
-      console.log("dialog id:", app.dialogId);
-      console.log("stats:", app.clickedCity);
+      // console.log("dialog id:", app.dialogId);
+      // console.log("stats:", app.clickedCity);
 
       const dialogEl = document.querySelector('[data-dialog="project-dialog"]');
+      const formEl = dialogEl.querySelector("form");
 
       if (typeof dialogEl !== "undefined" && dialogEl !== null) {
         // Exists.
+
+        // setup dialog element
         dialogEl.setAttribute("id", app.dialogId);
+
         const title = dialogEl.querySelector("h3");
         const countryName = dialogEl.querySelector("p.country-name");
         const population = dialogEl.querySelector("p.population");
+
         const stats = JSON.parse(app.clickedCity);
 
         title.textContent = stats.name;
         countryName.textContent = stats.country;
         population.textContent = stats.population;
+
+        // setup form additional fields
+        // const hiddenInput = document.createElement("input");
+        // constconst hiddenInput = document.createElement("input"); lonInput = hiddenInput
+        //   .setAttribute("id", "lon")
+        //   .setAttribute("name", "lon")
+        //   .setAttribute("value", `${stats.longitude}`)
+        //   .setAttribute("type", "hidden");
+
+        formEl.setAttribute("id", app.dialogId);
+        const lat = formEl.querySelector('input[name="lat"');
+        const lon = formEl.querySelector('input[name="lon"');
+
+        lat.value = `${stats.latitude}`;
+        lon.value = `${stats.longitude}`;
       }
     }
   });
