@@ -2,6 +2,11 @@
 @import "./_global.css";
 @import "./_form.css";
 
+
+header {
+    padding: 1rem;
+    min-height: var(--project-header-height);
+}
 /* main > * {
     place-items: center;
     grid-area: map;
@@ -38,7 +43,7 @@
 }
 
 #map {
-    height: 92dvh;
+    height: calc(99dvh - var(--project-header-height));
     width: 100%;
     margin: 0 auto;
     z-index: 0;

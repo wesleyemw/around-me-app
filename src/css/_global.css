@@ -16,6 +16,8 @@
     --color-marker-fill: #fff;
 
     --spacer: 1rem;
+
+    --project-header-height: 6rem;
 }
 
 html {
