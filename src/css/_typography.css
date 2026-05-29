@@ -1,16 +1,5 @@
 @import "../../node_modules/inter-ui/inter-variable.css";
 
-:root {
-  --font-fallback-text: system-ui, BlinkMacSystemFont,"Arial", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-sans;
-    --font-fallback-headings: system-ui, BlinkMacSystemFont, "Arial", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-sans;
-}
-
-@supports (font-variation-settings: normal) {
-  html { font-family: "InterVariable", var(--font-fallback-text); } /* If using the variable font */
-}
-
 @font-face {
     font-family: 'HostGrotesk';
     src: 
@@ -27,6 +16,19 @@
     font-display: swap;
 }
 
+:root {
+    --font-text-family: 'HostGrotesk', var(--font-fallback-text);
+    --font-text-weight: 400;
+    --font-titles-family: var(--font-text-family),var(--font-fallback-headings) ;
+    --font-titles-weight: 600;
+    --font-fallback-text: system-ui, BlinkMacSystemFont,"Arial", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-sans;
+    --font-fallback-headings: system-ui, BlinkMacSystemFont, "Arial", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-sans;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-titles-family);
+}
 h1 {
     font-size: 2rem;
     line-height: 1;
@@ -53,4 +55,10 @@ h5 {
 h6 {
     font-size: 1rem;
     line-height: 1.5;
+}
+
+p, ol, ul, label {
+    font-size: 1rem;
+    font-family: var(--font-text-family);
+    font-weight: var(--font-text-weight);
 }

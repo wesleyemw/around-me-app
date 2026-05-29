@@ -2,12 +2,6 @@
 @import "./_global.css";
 @import "./_form.css";
 
-main#map {
-    /* display: grid; */
-    /* grid-template-areas: 'map'; */
-    /* grid-template-columns: repeat(3, 1fr); */
-    position: relative;
-}
 /* main > * {
     place-items: center;
     grid-area: map;
@@ -44,14 +38,15 @@ main#map {
 }
 
 #map {
-    height: 98vh;
+    height: 92dvh;
     width: 100%;
     margin: 0 auto;
     z-index: 0;
     grid-row: span 4;
     grid-column: auto;
-    font-family: 'Helvetica', sans-serif;
+    /* font-family: 'Helvetica', sans-serif; */
     z-index: 0;
+    position: relative;
 }
 
 #opacity-control {
