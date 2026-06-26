@@ -2,34 +2,43 @@
 @import "./_global.css";
 @import "./_form.css";
 
-
+:root {
+    --grid-col-breakpoint: 20rem;   
+}
 header {
     padding: 1rem;
     min-height: var(--project-header-height);
 }
-/* main > * {
-    place-items: center;
+main {
+    display: grid;
+    grid-template-areas: 'map';
+    height: 60vh;
+    /* grid-template-columns: repeat( auto-fit, minmax(var(--grid-col-breakpoint), 1fr)); */
+}
+main > * {
     grid-area: map;
-} */
+}
+
 .overlay {
     z-index: 1;
+    display: block;
     background-color: #fff;
     border-radius: 5px;
-    position: absolute;
-    width: 20vw;
-    height: 95vh;
+    width: max-content;
+    /* position: absolute; */
+    /* width: 15%; */
+    height: max-content;
     padding: 5px;
-    grid-column: 1 / 2;
-    top: 1vh;
+    /* grid-column: 1 / 2;
+    grid-row: 1 / 2; */
+    margin-block-start: 1vh;
     transition: all 0.2s ease-in-out;
-    &.left {
-        left: 1vh;
-    }
+    margin-inline: 1vw;
     &.right {
-        right: 1vh;
         /* z-index: -1; */
         visibility: hidden;
         opacity: 0;
+        justify-self: end;
         &.open {
             /* z-index: 1; */
             opacity: 1;
@@ -39,6 +48,12 @@ header {
     & fieldset {
         display: flex;
         flex-direction: column;
+        margin: 0.5rem 0.25rem;
+    }
+}
+@media screen and (max-width: 425px)  {
+    .overlay {
+        min-width: 20vw;
     }
 }
 
@@ -47,13 +62,12 @@ header {
     width: 100%;
     margin: 0 auto;
     z-index: 0;
-    grid-row: span 4;
-    grid-column: auto;
-    /* font-family: 'Helvetica', sans-serif; */
-    z-index: 0;
+    /* grid-row: span 4;
+    grid-column: auto; */
+    /* font-family: 'Helvetica', sans-serif; 
     position: relative;
+    */
 }
-
 #opacity-control {
     border-radius: 2px;
 }

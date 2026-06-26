@@ -62,3 +62,8 @@ p, ol, ul, label {
     font-family: var(--font-text-family);
     font-weight: var(--font-text-weight);
 }
+@media screen and (max-width: 425px) {
+    p, ol, ul, label {
+        font-size: 0.8rem;
+    }
+}
