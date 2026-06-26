@@ -25,22 +25,19 @@ main > * {
     background-color: #fff;
     border-radius: 5px;
     width: max-content;
-    /* position: absolute; */
-    /* width: 15%; */
+    min-width: 20vw;
     height: max-content;
     padding: 5px;
-    /* grid-column: 1 / 2;
-    grid-row: 1 / 2; */
     margin-block-start: 1vh;
     transition: all 0.2s ease-in-out;
     margin-inline: 1vw;
     &.right {
-        /* z-index: -1; */
         visibility: hidden;
         opacity: 0;
         justify-self: end;
+        height: calc(100% - 2vh);
+        width: 75vw;
         &.open {
-            /* z-index: 1; */
             opacity: 1;
             visibility: visible;
         }
@@ -51,9 +48,16 @@ main > * {
         margin: 0.5rem 0.25rem;
     }
 }
-@media screen and (max-width: 425px)  {
+@media screen and (min-width: 426px)  {
     .overlay {
-        min-width: 20vw;
+        min-width: unset;
+    }
+}
+@media screen and (min-width: 769px) {
+    .overlay {
+        &.right {
+            width: 25vw;
+        }
     }
 }
 
@@ -62,11 +66,6 @@ main > * {
     width: 100%;
     margin: 0 auto;
     z-index: 0;
-    /* grid-row: span 4;
-    grid-column: auto; */
-    /* font-family: 'Helvetica', sans-serif; 
-    position: relative;
-    */
 }
 #opacity-control {
     border-radius: 2px;
@@ -77,9 +76,10 @@ main > * {
 *
 */ 
 .marker {
-    width: 1.25vw;
-    height: 1.25vw;
-    border-radius: 1vw;
+    width: clamp(24px, 1.25vw, 1.5vw);
+    /* height: clamp(16px, 1rem, 1.25vw); */
+    aspect-ratio: 1 / 1;
+    border-radius: clamp(24px, 1vw, 1.25vw);
     opacity: 0.75 !important;
     background-color: var(--color-marker);
     background-repeat: no-repeat;
@@ -94,7 +94,7 @@ main > * {
         mask-position: center;
         mask-repeat: no-repeat;
         mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19"><title>marker.svg</title><path fill="none" d="M0 0h19v19H0z"/><path fill="var(--color-marker-fill)" d="M9.5 3C7.423 3 5 4.288 5 7.568 5 9.793 8.462 14.712 9.5 16c.923-1.288 4.5-6.09 4.5-8.432C14 4.288 11.577 3 9.5 3"/></svg>');
-        mask-size: 1vw auto;
+        mask-size: 80% auto;
         background-color: var(--color-marker-fill);
         content: '';
         display: block;
