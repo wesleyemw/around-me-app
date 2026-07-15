@@ -1,5 +1,6 @@
 import { slugify } from "../js/modules/utils";
 import CreateProject from "../js/components/CreateProject";
+import { createMapProject } from "./modules/db";
 
 (() => {
   window.app = {};
@@ -7,6 +8,7 @@ import CreateProject from "../js/components/CreateProject";
     searchData: [],
     clickedCity: null,
     dialogId: null,
+    db: null,
     getData: async (query) => {
       // const query = "Menton";
       const headers = {
@@ -142,5 +144,18 @@ import CreateProject from "../js/components/CreateProject";
         lon.value = `${stats.longitude}`;
       }
     }
+  });
+  const projectForm = document.querySelector('[name="create-project"]');
+  projectForm.addEventListener("submit", (ev) => {
+    // ev.preventDefault();
+    const id = projectForm.getAttribute("id");
+    const projectName = projectForm
+      .querySelector('[name="project-name"]')
+      .value.trim();
+
+    // console.log(ev.target);
+    createMapProject(id, projectName, app.clickedCity);
+
+    projectForm.action = "/pages/map/";
   });
 })();
