@@ -146,7 +146,7 @@ import { createMapProject } from "./modules/db";
     }
   });
   const projectForm = document.querySelector('[name="create-project"]');
-  projectForm.addEventListener("submit", (ev) => {
+  projectForm.addEventListener("submit", () => {
     // ev.preventDefault();
     const id = projectForm.getAttribute("id");
     const projectName = projectForm
