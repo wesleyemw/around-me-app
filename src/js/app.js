@@ -1,6 +1,6 @@
 import { slugify } from "../js/modules/utils";
 import CreateProject from "../js/components/CreateProject";
-import { createMapProject } from "./modules/db";
+import { createMapProject, writeRecord } from "./modules/db";
 
 (() => {
   window.app = {};
@@ -143,6 +143,12 @@ import { createMapProject } from "./modules/db";
         lat.value = `${stats.latitude}`;
         lon.value = `${stats.longitude}`;
       }
+    }
+    if (evt.target.matches("button[data-action]")) {
+      const id = evt.target.closest("section.project-item").getAttribute("id");
+      const action = evt.target.dataset.action;
+      // console.log(id, action);
+      writeRecord(id, action);
     }
   });
   const projectForm = document.querySelector('[name="create-project"]');

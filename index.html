@@ -82,6 +82,24 @@
             </form>
           </dialog>
         </template>
+
+        <template>
+          <dialog data-dialog="edit-project">
+            <form name="edit-project">
+              <div class="field-group">
+                <label for="project-name">Project name:</label>
+                <input
+                  type="text"
+                  name="project-name"
+                  id="project-name"
+                  min="3"
+                  required
+                />
+              </div>
+              <button type="submit">Save</button>
+            </form>
+          </dialog>
+        </template>
       </main>
     </div>
   </body>

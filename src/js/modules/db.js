@@ -112,3 +112,30 @@ function renderAllRecords() {
     console.warn(err);
   });
 }
+
+export function writeRecord(key, action) {
+  const transaction = db.transaction("placesStore", "readwrite");
+  const store = transaction.objectStore("placesStore");
+
+  const getRequest = store.get(key, action);
+
+  getRequest.onerror = (err) => {
+    console.warn("Request resulted in error:", err);
+  };
+  getRequest.onsuccess = (event) => {
+    const result = event.target.result;
+    const name = result.name;
+    if (action === "delete") {
+      // get an confirmation and then delete the record
+      store.delete(key);
+
+      transaction.oncomplete = () => {
+        // remove the element from html and show a message
+        console.log(`The record ${name} was deleted.`);
+      };
+    }
+    if (action === "edit") {
+      console.log(action);
+    }
+  };
+}
