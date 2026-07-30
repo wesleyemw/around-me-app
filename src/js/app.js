@@ -1,6 +1,7 @@
 import { slugify } from "../js/modules/utils";
 import CreateProject from "../js/components/CreateProject";
 import EditProject from "./components/EditProject";
+import confirmDeleteProject from "./components/confirmDeleteProject";
 import { createMapProject, writeRecord, renderAllRecords } from "./modules/db";
 
 (() => {
@@ -177,8 +178,28 @@ import { createMapProject, writeRecord, renderAllRecords } from "./modules/db";
       if (action === "delete") {
         let deleteConfirmationElement = null;
         const mainElement = document.querySelector("#home");
-        deleteConfirmationElement = document.createElement("edit-project");
+        deleteConfirmationElement = document.createElement(
+          "confirm-delete-project",
+        );
         mainElement.appendChild(deleteConfirmationElement);
+
+        const confirmDialog = deleteConfirmationElement.querySelector("dialog");
+        const confirmForm = confirmDialog.querySelector("form");
+        confirmDialog.showModal();
+
+        confirmForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          // console.log(event.submitter.dataset);
+          const dataset = event.submitter.dataset.delete;
+
+          if (dataset === "yes") {
+            writeRecord(id, action, null);
+            renderAllRecords();
+            confirmDialog.close();
+          } else {
+            confirmDialog.close();
+          }
+        });
       }
       // console.log(id, action);
       // writeRecord(id, action);

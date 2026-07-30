@@ -99,6 +99,20 @@
             </form>
           </dialog>
         </template>
+
+        <template id="delete-project-template">
+          <dialog data-dialog="delete-project" id="delete-dialog">
+            <form action="delete-dialog">
+              <div class="field-group">
+                <p>Are you sure? This action cannot be undone</p>
+              </div>
+              <button type="submit" data-delete="no">
+                No, get me outta here!
+              </button>
+              <button type="submit" data-delete="yes">Yes, I'm sure</button>
+            </form>
+          </dialog>
+        </template>
       </main>
     </div>
   </body>
