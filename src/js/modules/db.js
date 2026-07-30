@@ -70,8 +70,9 @@ export function renderAllRecords() {
   // request events
   allRecordsReq.addEventListener("success", (event) => {
     const container = document.querySelector("section.projects > .container");
-    const div = document.createElement("div");
-    div.setAttribute("class", "projects-results");
+    const div = container.querySelector("div.projects-results");
+    div.innerHTML = "";
+    // div.setAttribute("class", "projects-results");
 
     // add to element
     container.insertAdjacentElement("beforeend", div);
