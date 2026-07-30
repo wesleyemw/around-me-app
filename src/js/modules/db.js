@@ -59,8 +59,7 @@ export function createMapProject(id, name, data) {
     console.warn("Transaction resulted in error:", err);
   };
 }
-
-function renderAllRecords() {
+export function renderAllRecords() {
   const txRead = db.transaction("placesStore", "readonly");
 
   const store = txRead.objectStore("placesStore");
@@ -73,6 +72,9 @@ function renderAllRecords() {
     const container = document.querySelector("section.projects > .container");
     const div = document.createElement("div");
     div.setAttribute("class", "projects-results");
+
+    // add to element
+    container.insertAdjacentElement("beforeend", div);
 
     // create request
     const req = event.target;
@@ -104,38 +106,51 @@ function renderAllRecords() {
       `;
       div.insertAdjacentElement("beforeend", item);
     });
-
-    // add to element
-    container.insertAdjacentElement("beforeend", div);
   });
   allRecordsReq.addEventListener("error", (err) => {
     console.warn(err);
   });
 }
 
-export function writeRecord(key, action) {
+export function writeRecord(key, action, newTitle = "") {
   const transaction = db.transaction("placesStore", "readwrite");
   const store = transaction.objectStore("placesStore");
 
-  const getRequest = store.get(key, action);
+  const getRequest = store.get(key);
 
   getRequest.onerror = (err) => {
     console.warn("Request resulted in error:", err);
   };
   getRequest.onsuccess = (event) => {
-    const result = event.target.result;
-    const name = result.name;
     if (action === "delete") {
+      const result = event.target.result;
       // get an confirmation and then delete the record
       store.delete(key);
 
       transaction.oncomplete = () => {
         // remove the element from html and show a message
-        console.log(`The record ${name} was deleted.`);
+        console.log(`The record ${result.name} was deleted.`);
       };
     }
     if (action === "edit") {
-      console.log(action);
+      // console.log(newTitle);
+      const result = event.target.result;
+
+      result.name = newTitle;
+      const requestUpdate = store.put(result);
+
+      requestUpdate.onerror = (event) => {
+        // Do something with the error
+      };
+      requestUpdate.onsuccess = (event) => {
+        // Success - the data is updated!
+        console.log("Success - the data is updated!");
+      };
+
+      transaction.oncomplete = () => {
+        // refresh the records on display
+        console.log(`The record ${result.name} was changed.`);
+      };
     }
   };
 }

@@ -1,6 +1,7 @@
 import { slugify } from "../js/modules/utils";
 import CreateProject from "../js/components/CreateProject";
-import { createMapProject, writeRecord } from "./modules/db";
+import EditProject from "./components/EditProject";
+import { createMapProject, writeRecord, renderAllRecords } from "./modules/db";
 
 (() => {
   window.app = {};
@@ -93,6 +94,7 @@ import { createMapProject, writeRecord } from "./modules/db";
   };
   app.getFormQuery();
 
+  // TODO: Improve this element creation
   let dialogElement = null;
   const mainElement = document.querySelector("#home");
   dialogElement = document.createElement("create-project");
@@ -147,10 +149,42 @@ import { createMapProject, writeRecord } from "./modules/db";
     if (evt.target.matches("button[data-action]")) {
       const id = evt.target.closest("section.project-item").getAttribute("id");
       const action = evt.target.dataset.action;
+      const recordEl = evt.target.closest("section.project-item");
+
+      if (action === "edit") {
+        // this can be a function
+        let editElement = null;
+        const mainElement = document.querySelector("#home");
+        editElement = document.createElement("edit-project");
+        mainElement.appendChild(editElement);
+
+        const editDialog = editElement.querySelector("dialog");
+        const editForm = editDialog.querySelector("form");
+
+        editDialog.showModal();
+
+        editForm.addEventListener("submit", (ev) => {
+          ev.preventDefault();
+          const newProjectName = editForm
+            .querySelector('[name="project-name"]')
+            .value.trim();
+          writeRecord(id, action, newProjectName);
+          recordEl.remove();
+          editDialog.close();
+          renderAllRecords();
+        });
+      }
+      if (action === "delete") {
+        let deleteConfirmationElement = null;
+        const mainElement = document.querySelector("#home");
+        deleteConfirmationElement = document.createElement("edit-project");
+        mainElement.appendChild(deleteConfirmationElement);
+      }
       // console.log(id, action);
-      writeRecord(id, action);
+      // writeRecord(id, action);
     }
   });
+
   const projectForm = document.querySelector('[name="create-project"]');
   projectForm.addEventListener("submit", () => {
     // ev.preventDefault();
