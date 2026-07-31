@@ -84,6 +84,11 @@ export function renderAllRecords() {
     const results = req.result;
 
     if (results.length === 0) {
+      const message = `You don't have any map saved yet.`;
+      const p = document.createElement("p");
+      p.textContent = message;
+
+      div.insertAdjacentElement("beforeend", p);
       console.log("There's no records!");
       return;
     }
@@ -95,7 +100,9 @@ export function renderAllRecords() {
       item.setAttribute("id", record.id);
       item.setAttribute("class", "project-item");
       item.innerHTML = `
-        <h1>${record.name}</h1>
+        <a href="pages/map/?project-name=${record.name}&lon=${data.longitude}&lat=${data.latitude}">
+          <h1>${record.name}</h1>
+        </a>
         <p>
           <span>${data.name}</span>
           <span>${data.region}</span>
