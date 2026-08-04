@@ -100,7 +100,7 @@ export function renderAllRecords() {
       item.setAttribute("id", record.id);
       item.setAttribute("class", "project-item");
       item.innerHTML = `
-        <a href="pages/map/?project-name=${record.name}&lon=${data.longitude}&lat=${data.latitude}">
+        <a href="pages/map/?id=${record.id}&project-name=${record.name}&lon=${data.longitude}&lat=${data.latitude}">
           <h1>${record.name}</h1>
         </a>
         <p>

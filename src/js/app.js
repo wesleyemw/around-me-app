@@ -140,9 +140,11 @@ import { createMapProject, writeRecord, renderAllRecords } from "./modules/db";
         //   .setAttribute("type", "hidden");
 
         formEl.setAttribute("id", app.dialogId);
+        const idActionEl = formEl.querySelector('input[name="id"');
         const lat = formEl.querySelector('input[name="lat"');
         const lon = formEl.querySelector('input[name="lon"');
 
+        idActionEl.value = app.dialogId;
         lat.value = `${stats.latitude}`;
         lon.value = `${stats.longitude}`;
       }
