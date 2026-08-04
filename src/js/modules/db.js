@@ -12,7 +12,7 @@ let db = null;
     db = ev.target.result;
     console.log("success", db);
 
-    // render the records
+    // render the records - only on project page
     renderAllRecords();
   });
 
@@ -100,7 +100,7 @@ export function renderAllRecords() {
       item.setAttribute("id", record.id);
       item.setAttribute("class", "project-item");
       item.innerHTML = `
-        <a href="pages/map/?id=${record.id}&project-name=${record.name}&lon=${data.longitude}&lat=${data.latitude}">
+        <a href="pages/map/?project-name=${record.name}&id=${record.id}&lon=${data.longitude}&lat=${data.latitude}">
           <h1>${record.name}</h1>
         </a>
         <p>
@@ -160,5 +160,19 @@ export function writeRecord(key, action, newTitle = "") {
         console.log(`The record ${result.name} was changed.`);
       };
     }
+  };
+}
+
+export function readRecord(key) {
+  const transaction = db.transaction("placesStore");
+  const store = transaction.objectStore("placesStore");
+
+  const readRequest = store.get(key);
+  readRequest.onerror = (err) => {
+    console.warn("Request resulted in error:", err);
+  };
+  readRequest.onsuccess = (event) => {
+    const result = event.target.result;
+    return result;
   };
 }

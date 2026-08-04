@@ -7,6 +7,8 @@ import definitions from "./modules/definitions";
 
 import FeatureSidebar from "./components/FeatureSidebar";
 
+import { readRecord } from "./modules/db";
+
 (async () => {
   // TODO: Move this to a proxy store
   window.utils = {};
@@ -395,3 +397,6 @@ import FeatureSidebar from "./components/FeatureSidebar";
 // https://maplibre.org/maplibre-gl-js/docs/examples/add-live-realtime-data/
 // Update the drone symbol's location on the map
 // map.getSource("drone").setData(json);
+
+let searchParams = new URLSearchParams(document.location.search);
+let key = searchParams.get("id");
