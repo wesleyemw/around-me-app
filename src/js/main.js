@@ -368,9 +368,26 @@ import { readRecord } from "./modules/db";
     // toggle overlays elements
     if (e.target.dataset.toggle === "overlay") {
       const parent = e.target.parentNode;
-      parent.classList.toggle("open");
+;      parent.classList.toggle("open");
     }
   });
+
+  document.addEventListener('change', (e) => {
+    if (e.target.getAttribute('name') === 'point') {
+      if (e.target.checked === true) {
+        console.log('element checked')
+
+        // save here
+        // savePoint(projectID, pointID)
+        
+        console.log(window.utils.clickedMarker);
+      } else {
+        console.log('element not checked')
+        // ask for confirmation
+        // removePoint(projectId, pointID)
+      }
+    }
+  })
 
   // document.addEventListener("DOMContentLoaded", () => {
   // });

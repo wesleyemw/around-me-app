@@ -120,6 +120,7 @@ export function renderAllRecords() {
   });
 }
 
+// TODO: Change the name of these functions - these refers to projects
 export function writeRecord(key, action, newTitle = "") {
   const transaction = db.transaction("placesStore", "readwrite");
   const store = transaction.objectStore("placesStore");
