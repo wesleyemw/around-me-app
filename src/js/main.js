@@ -186,6 +186,7 @@ import { readRecord } from "./modules/db";
         const elementsResponse = response.elements;
         console.log(elementsResponse);
 
+        // TODO: Grab the point ID here, too
         const category = Object.keys(tags)[0];
         const featureName = Object.values(tags)[0][0];
         //console.log("new layer name:", `layer_${category}_${featureName}`);
@@ -220,15 +221,24 @@ import { readRecord } from "./modules/db";
               let pageElement = null;
               pageElement = document.createElement("feature-sidebar");
               const featureEl = rightPanel.querySelector("feature-sidebar");
+
               if (featureEl !== null) {
                 rightPanel.removeChild(featureEl);
                 rightPanel.appendChild(pageElement);
+
+
               } else {
                 rightPanel.appendChild(pageElement);
               }
 
               if (rightPanel !== null) {
                 rightPanel.classList.add("open");
+
+                const elm = rightPanel.querySelector('feature-sidebar > div');
+                elm.setAttribute('data-category', category);
+                elm.setAttribute('data-feature-name', featureName);
+
+                console.log(elm);
               }
             });
 
@@ -379,6 +389,11 @@ import { readRecord } from "./modules/db";
 
         // save here
         // savePoint(projectID, pointID)
+        // 
+        // 
+        
+        // const pointID = e.target.closest('div').getAttribute('id');
+        // const data = window.utils.clickedMarker;
         
         console.log(window.utils.clickedMarker);
       } else {

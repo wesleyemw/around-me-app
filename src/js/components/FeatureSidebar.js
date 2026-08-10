@@ -9,6 +9,8 @@ export default class FeatureSidebar extends HTMLElement {
     // console.log(data.properties);
     if (data) {
       this.querySelector("div").setAttribute('id', data.properties.id);
+      // this.querySelector("div").setAttribute('data-category', data.properties.category);
+      // this.querySelector("div").setAttribute('data-feature-name', data.properties.featureName);
       this.querySelector("h3").textContent = data.properties.name;
       const features = data.properties;
       // console.log(features);
