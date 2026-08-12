@@ -411,9 +411,20 @@ import { point } from "@turf/turf";
 
         console.log('point data:', pointData);
 
-        tempDB.push(JSON.stringify(pointData));
+        if (tempDB.length === 0) {
+          tempDB.push(pointData);
+        } else {
+          console.log('tempDB already have items');
+          
+          let index = tempDB.findIndex((item) => item['pointID'] === pointID );
 
-        console.log('temp DB:', tempDB);
+          if (index === -1) {
+            tempDB.push(pointData);
+          } else {
+             console.log("Object already exists");
+          }
+        }
+        // tempDB.push(pointData);
                 
         // console.log(window.utils.clickedMarker);
       } else {
@@ -421,6 +432,8 @@ import { point } from "@turf/turf";
         // ask for confirmation
         // removePoint(projectId, pointID)
       }
+
+        console.log('temp DB:', tempDB);
     }
   })
 
