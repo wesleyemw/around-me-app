@@ -393,6 +393,7 @@ import { point } from "@turf/turf";
   const tempDB = [];
 
   document.addEventListener('change', (e) => {
+    // this could be a function
     if (e.target.getAttribute('name') === 'point') {
 
       const parentDiv = e.target.closest('div').parentElement;
@@ -410,20 +411,17 @@ import { point } from "@turf/turf";
         const pointData = {pointID, category, featureName, data };
 
         console.log('point data:', pointData);
+          
 
-        if (tempDB.length === 0) {
+        // separate to a function 
+        let index = tempDB.findIndex((item) => item['pointID'] === pointID );
+
+        if (index === -1) {
           tempDB.push(pointData);
         } else {
-          console.log('tempDB already have items');
-          
-          let index = tempDB.findIndex((item) => item['pointID'] === pointID );
-
-          if (index === -1) {
-            tempDB.push(pointData);
-          } else {
-             console.log("Object already exists");
-          }
+           console.log("Object already exists");
         }
+        
         // tempDB.push(pointData);
                 
         // console.log(window.utils.clickedMarker);
