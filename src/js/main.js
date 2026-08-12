@@ -8,6 +8,7 @@ import definitions from "./modules/definitions";
 import FeatureSidebar from "./components/FeatureSidebar";
 
 import { readRecord } from "./modules/db";
+import { point } from "@turf/turf";
 
 (async () => {
   // TODO: Move this to a proxy store
@@ -389,20 +390,32 @@ import { readRecord } from "./modules/db";
     }
   });
 
+  const tempDB = [];
+
   document.addEventListener('change', (e) => {
     if (e.target.getAttribute('name') === 'point') {
-      if (e.target.checked === true) {
-        console.log('element checked')
 
+      const parentDiv = e.target.closest('div').parentElement;
+      if (e.target.checked === true) {
+        console.log('element checked');
         // save here
         // savePoint(projectID, pointID)
-        // 
-        // 
-        
-        // const pointID = e.target.closest('div').getAttribute('id');
-        // const data = window.utils.clickedMarker;
-        
-        console.log(window.utils.clickedMarker);
+        //    
+  
+        const pointID = parentDiv.getAttribute('id');
+        const category = parentDiv.dataset.category;
+        const featureName = parentDiv.dataset.featureName;
+        const data = window.utils.clickedMarker;
+
+        const pointData = {pointID, category, featureName, data };
+
+        console.log('point data:', pointData);
+
+        tempDB.push(JSON.stringify(pointData));
+
+        console.log('temp DB:', tempDB);
+                
+        // console.log(window.utils.clickedMarker);
       } else {
         console.log('element not checked')
         // ask for confirmation
