@@ -183,10 +183,12 @@ import { readRecord } from "./modules/db";
       .getElementsByBoundingBox(tags, box, elements)
       .subscribe((response) => {
         // console.log(Object.values(tagsObj)[0][0]);
-        const elementsResponse = response.elements;
-        console.log(elementsResponse);
+        // const elementsResponse = response.elements;
+        // console.log('elements response:', elementsResponse);
 
         // TODO: Grab the point ID here, too
+        //       
+
         const category = Object.keys(tags)[0];
         const featureName = Object.values(tags)[0][0];
         //console.log("new layer name:", `layer_${category}_${featureName}`);
@@ -218,6 +220,10 @@ import { readRecord } from "./modules/db";
               // elAttribute = JSON.stringify(marker);
               window.utils.clickedMarker = await marker; // console.log(utils.clickedMarker);
 
+              const featureID = window.utils.clickedMarker.properties.id;
+
+              // console.log('marker id:', featureID);
+
               let pageElement = null;
               pageElement = document.createElement("feature-sidebar");
               const featureEl = rightPanel.querySelector("feature-sidebar");
@@ -235,6 +241,7 @@ import { readRecord } from "./modules/db";
                 rightPanel.classList.add("open");
 
                 const elm = rightPanel.querySelector('feature-sidebar > div');
+                elm.setAttribute('id', featureID);
                 elm.setAttribute('data-category', category);
                 elm.setAttribute('data-feature-name', featureName);
 
