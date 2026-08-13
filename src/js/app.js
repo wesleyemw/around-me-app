@@ -171,7 +171,7 @@ import { createMapProject, writeRecord, renderAllRecords } from "./modules/db";
           const newProjectName = editForm
             .querySelector('[name="project-name"]')
             .value.trim();
-          writeRecord(id, action, newProjectName);
+          writeRecord(id, action, newProjectName, '');
           recordEl.remove();
           editDialog.close();
           renderAllRecords();

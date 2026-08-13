@@ -7,7 +7,7 @@ import definitions from "./modules/definitions";
 
 import FeatureSidebar from "./components/FeatureSidebar";
 
-import { readRecord } from "./modules/db";
+import { readRecord, writeRecord } from "./modules/db";
 import { point } from "@turf/turf";
 
 (async () => {
@@ -15,6 +15,7 @@ import { point } from "@turf/turf";
   window.utils = {};
   utils = {
     clickedMarker: null,
+    tempDB: []
   };
 
   const urlSearchParams = new URLSearchParams(window.location.search);
@@ -386,11 +387,20 @@ import { point } from "@turf/turf";
     // toggle overlays elements
     if (e.target.dataset.toggle === "overlay") {
       const parent = e.target.parentNode;
-;      parent.classList.toggle("open");
+      parent.classList.toggle("open");
+    }
+    // save points to DB
+    // 
+    if (e.target.dataset.action === "save-points") {
+      let searchParams = new URLSearchParams(document.location.search);
+      let key = searchParams.get("id");
+      const points = JSON.stringify(window.utils.tempDB);
+      console.log('points:', points);
+      writeRecord(key, 'save-points','', points);
     }
   });
 
-  const tempDB = [];
+  // const tempDB = [];
 
   document.addEventListener('change', (e) => {
     // this could be a function
@@ -414,10 +424,10 @@ import { point } from "@turf/turf";
           
 
         // separate to a function 
-        let index = tempDB.findIndex((item) => item['pointID'] === pointID );
+        let index = window.utils.tempDB.findIndex((item) => item['pointID'] === pointID );
 
         if (index === -1) {
-          tempDB.push(pointData);
+          window.utils.tempDB.push(pointData);
         } else {
            console.log("Object already exists");
         }
@@ -431,7 +441,7 @@ import { point } from "@turf/turf";
         // removePoint(projectId, pointID)
       }
 
-        console.log('temp DB:', tempDB);
+        console.log('temp DB:', window.utils.tempDB);
     }
   })
 
@@ -461,5 +471,4 @@ import { point } from "@turf/turf";
 // Update the drone symbol's location on the map
 // map.getSource("drone").setData(json);
 
-let searchParams = new URLSearchParams(document.location.search);
-let key = searchParams.get("id");
+

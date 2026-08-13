@@ -121,7 +121,7 @@ export function renderAllRecords() {
 }
 
 // TODO: Change the name of these functions - these refers to projects
-export function writeRecord(key, action, newTitle = "") {
+export function writeRecord(key, action, newTitle = "", pointsJson = "") {
   const transaction = db.transaction("placesStore", "readwrite");
   const store = transaction.objectStore("placesStore");
 
@@ -160,6 +160,28 @@ export function writeRecord(key, action, newTitle = "") {
         // refresh the records on display
         console.log(`The record ${result.name} was changed.`);
       };
+    }
+
+    if (action === "save-points") {
+
+      const result = event.target.result;
+      result.points = pointsJson;
+
+      const requestUpdate = store.put(result);
+
+      requestUpdate.onerror = (event) => {
+        // Do something with the error
+      };
+      requestUpdate.onsuccess = (event) => {
+        // Success - the data is updated!
+        console.log("Success - the data is updated!");
+      };
+
+      transaction.oncomplete = () => {
+        // refresh the records on display
+        console.log(`The record ${result.name} was changed.`);
+      };
+
     }
   };
 }

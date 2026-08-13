@@ -7,7 +7,7 @@
     display: grid;
     grid-template-rows: repeat(2, 1fr);
     place-content: stretch;
-    min-height: 100dvh;
+    /*min-height: 100dvh;*/
     header {
         display: flex;
         flex-direction: column;
