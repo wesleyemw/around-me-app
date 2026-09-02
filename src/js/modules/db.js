@@ -13,7 +13,11 @@ let db = null;
     console.log("success", db);
 
     // render the records - only on project page
-    renderAllRecords();
+    // 
+    if (document.querySelector("section.projects > .container") !== null) {
+      renderAllRecords();
+    }
+    window.db = db;
   });
 
   // upgrade needed event
@@ -35,6 +39,8 @@ let db = null;
     // }
   });
 })();
+
+
 
 export function createMapProject(id, name, data) {
   let mapProject = {
@@ -59,6 +65,8 @@ export function createMapProject(id, name, data) {
     console.warn("Transaction resulted in error:", err);
   };
 }
+
+
 export function renderAllRecords() {
   const txRead = db.transaction("placesStore", "readonly");
 
@@ -186,16 +194,17 @@ export function writeRecord(key, action, newTitle = "", pointsJson = "") {
   };
 }
 
-export function readRecord(key) {
-  const transaction = db.transaction("placesStore");
-  const store = transaction.objectStore("placesStore");
+// export function readRecord(key) {
+//   const db = window.db;
+//   const transaction = db.transaction("placesStore", 'readonly');
+//   const store = transaction.objectStore("placesStore");
 
-  const readRequest = store.get(key);
-  readRequest.onerror = (err) => {
-    console.warn("Request resulted in error:", err);
-  };
-  readRequest.onsuccess = (event) => {
-    const result = event.target.result;
-    return result;
-  };
-}
+//   const readRequest = store.get(key);
+//   readRequest.onerror = (err) => {
+//     console.warn("Request resulted in error:", err);
+//   };
+//   readRequest.onsuccess = (event) => {
+//     const result = event.target.result;
+//     return result;
+//   };
+// }

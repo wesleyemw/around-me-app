@@ -7,7 +7,7 @@ import definitions from "./modules/definitions";
 
 import FeatureSidebar from "./components/FeatureSidebar";
 
-import { readRecord, writeRecord } from "./modules/db";
+import { writeRecord } from "./modules/db";
 import { point } from "@turf/turf";
 
 (async () => {
@@ -164,18 +164,79 @@ import { point } from "@turf/turf";
     
     // add saved points source and layer
     // 
-    map.addSource('saved-points',{
-      type: 'Feature',
-      geometry: {
+    map.addSource('saved-points',{type: 'geojson', data: {
+        type: 'Feature',
+        geometry: {
             type: 'Point',
             coordinates: [0, 0]
         }
-    });
+    }});
     map.addLayer({
       id: 'saved-points-layer',
       type: 'symbol',
       source: 'saved-points'
     });
+
+
+    async function getRecord(key) {
+      const databases = await indexedDB.databases();
+      if (databases.length !== 0) {
+        let db = null;
+        let DBOpenReq = window.indexedDB.open("PlacesDB", 1);
+
+        DBOpenReq.addEventListener("success", (ev) => {
+          db = ev.target.result;
+          const transaction = db.transaction("placesStore", 'readonly');
+          const store = transaction.objectStore("placesStore");
+
+          const readRequest = store.get(key);
+          readRequest.onerror = (err) => {
+            console.warn("Request resulted in error:", err);
+          };
+          readRequest.onsuccess = (event) => {
+            const result = event.target.result;
+            createGeoJSON(result);
+          };
+      });
+      }
+    }
+
+    getRecord(params.id);    
+
+    function createGeoJSON(data = {}) {
+      if (data.length === 0) return;
+      const points = JSON.parse(data.points); 
+      console.log('points:', points) 
+      let features = [];
+
+      points.forEach(point => {
+        const pointData = point.data;        
+        pointData.properties.featureName = point.featureName;
+        pointData.properties.visualCategory = point.category;
+        features.push(point.data);
+      })
+
+      console.log(features);
+
+      const jsonContent =  {
+        'type': 'FeatureCollection', features
+      };
+
+      map.getSource('saved-points').setData(jsonContent);
+
+      // create markers
+      jsonContent.features.forEach((marker)=>{
+        const el = document.createElement("div");
+        el.classList = `marker layer_${ marker.properties.visualCategory }_${ marker.properties.featureName } saved`;
+
+        // add marker to map
+        new maplibregl.Marker({element: el})
+        .setLngLat(marker.geometry.coordinates)
+        .addTo(map);
+      });
+    }
+
+
   });
 
   // get data on map zoom - could be good to only show the form on a more apropriate zoom range
@@ -487,5 +548,4 @@ import { point } from "@turf/turf";
 // https://maplibre.org/maplibre-gl-js/docs/examples/add-live-realtime-data/
 // Update the drone symbol's location on the map
 // map.getSource("drone").setData(json);
-
 

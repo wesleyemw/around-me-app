@@ -188,6 +188,10 @@ main > * {
         width: 100%;
         height: 100%;
     }
+    &.saved {
+        outline: dotted 0.2rem var(--color-marker);
+        outline-offset: 0.25rem;
+    }
 }
 
 /* 
@@ -197,14 +201,15 @@ main > * {
 */ 
 
 .marker.layer_highway_bus_stop {
-    background-color: var(--color-marker-bus);
+    --color-marker: var(--color-marker-bus);
+    /*background-color: var(--color-marker-bus);*/
     &::before {
         mask-image: var(--icon-bus-stop);
     }       
 }
 .marker.layer_railway_station,
 .marker.layer_station_subway {
-    background-color: var(--color-marker-rail);    
+    --color-marker: var(--color-marker-rail);    
 }
 .marker.layer_station_subway {
     &::before {
@@ -217,7 +222,7 @@ main > * {
     }
 }
 .marker.layer_railway_tram_stop {
-    background-color: var(--color-marker-bus);
+    --color-marker: var(--color-marker-bus);
     &::before {
         mask-image: var(--icon-tram-stop);
     }
@@ -226,8 +231,9 @@ main > * {
 .marker.layer_amenity_restaurant,
 .marker.layer_amenity_fast_food,
 .marker.layer_amenity_food_court,
-.marker.layer_amenity_bar {
-    background-color: var(--color-marker-food);
+.marker.layer_amenity_bar {    
+    --color-marker: var(--color-marker-food);
+    /*background-color: var(--color-marker-food);*/
 }
 /* 
 * 
@@ -271,11 +277,11 @@ main > * {
 .marker.layer_shop_confectionery,
 .marker.layer_shop_chocolate,
 .marker.layer_shop_pastry {
-    background-color: var(--color-marker-dessert);
+    --color-marker: var(--color-marker-dessert);
 }
 .marker.layer_amenity_cafe,
 .marker.layer_shop_bakery {
-    background-color: var(--color-marker-cafe);
+    --color-marker: var(--color-marker-cafe);
 }
 .marker.layer_amenity_ice_cream {
     &::before {
@@ -309,7 +315,7 @@ main > * {
 .marker.layer_shop_greengrocer,
 .marker.layer_shop_convenience,
 .marker.layer_amenity_marketplace {
-    background-color: var(--color-marker-groceries);
+    --color-marker: var(--color-marker-groceries);
 }
 .marker.layer_shop_supermarket {
     &::before {
@@ -339,7 +345,7 @@ main > * {
 .marker.layer_shop_storage_rental,
 .marker.layer_amenity_toilets,
 .marker.layer_amenity_internet_cafe  {
-    background-color: var(--color-marker-utils);
+    --color-marker: var(--color-marker-utils);
 }
 .marker.layer_shop_storage_rental {
     &::before {
@@ -363,7 +369,7 @@ main > * {
 */  
 .marker.layer_amenity_pharmacy,
 .marker.layer_amenity_hospital {
-    background-color: var(--color-marker-health);
+    --color-marker: var(--color-marker-health);
 }
 .marker.layer_amenity_pharmacy {
     &::before {
