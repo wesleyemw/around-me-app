@@ -159,6 +159,23 @@ import { point } from "@turf/turf";
     });
     //getAmenitiesByBbox({ tourism: ["museum"] });
     //getAmenitiesByBbox({ station: ["subway"] });
+    //
+    //
+    
+    // add saved points source and layer
+    // 
+    map.addSource('saved-points',{
+      type: 'Feature',
+      geometry: {
+            type: 'Point',
+            coordinates: [0, 0]
+        }
+    });
+    map.addLayer({
+      id: 'saved-points-layer',
+      type: 'symbol',
+      source: 'saved-points'
+    });
   });
 
   // get data on map zoom - could be good to only show the form on a more apropriate zoom range
