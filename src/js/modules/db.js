@@ -173,7 +173,10 @@ export function writeRecord(key, action, newTitle = "", pointsJson = "") {
     if (action === "save-points") {
 
       const result = event.target.result;
-      result.points = pointsJson;
+
+      // here we are updating the points - overwriting them
+      // 
+      result.points = pointsJson;  
 
       const requestUpdate = store.put(result);
 

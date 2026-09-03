@@ -15,7 +15,8 @@ import { point } from "@turf/turf";
   window.utils = {};
   utils = {
     clickedMarker: null,
-    tempDB: []
+    tempDB: [],
+    savedPoints: null,
   };
 
   const urlSearchParams = new URLSearchParams(window.location.search);
@@ -195,6 +196,11 @@ import { point } from "@turf/turf";
           };
           readRequest.onsuccess = (event) => {
             const result = event.target.result;
+            
+            window.utils.savedPoints = result.points;
+
+            // console.log(JSON.parse(window.utils.savedPoints));
+
             createGeoJSON(result);
           };
       });
@@ -204,9 +210,10 @@ import { point } from "@turf/turf";
     getRecord(params.id);    
 
     function createGeoJSON(data = {}) {
-      if (data.length === 0) return;
+      if (Object.keys(data).length === 0) return;
+
       const points = JSON.parse(data.points); 
-      console.log('points:', points) 
+      // console.log('points:', points) 
       let features = [];
 
       points.forEach(point => {
@@ -472,6 +479,16 @@ import { point } from "@turf/turf";
     if (e.target.dataset.action === "save-points") {
       let searchParams = new URLSearchParams(document.location.search);
       let key = searchParams.get("id");
+
+      if (window.utils.savedPoints.length !== 0) {
+        console.log('We have points previously saved');
+
+        const savePoints = JSON.parse(window.utils.savedPoints);
+        savePoints.forEach((savedpoint)=>{
+          window.utils.tempDB.push(savedpoint);
+        })
+      }
+
       const points = JSON.stringify(window.utils.tempDB);
       console.log('points:', points);
       writeRecord(key, 'save-points','', points);
