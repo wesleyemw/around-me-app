@@ -216,6 +216,8 @@ import { point } from "@turf/turf";
       // console.log('points:', points) 
       let features = [];
 
+      if (points === null) return;
+
       points.forEach(point => {
         const pointData = point.data;        
         pointData.properties.featureName = point.featureName;
@@ -391,7 +393,7 @@ import { point } from "@turf/turf";
 
   function removeLayers(arr) {
     arr.forEach((layer) => {
-      const removedMarkers = Array.from(document.querySelectorAll(`.${layer}`));
+      const removedMarkers = Array.from(document.querySelectorAll(`.${layer}:not(.saved)`));
       for (const item of removedMarkers) {
         item.style.display = "none";
       }
@@ -451,7 +453,6 @@ import { point } from "@turf/turf";
         name = `layer_${Object.keys(item)}_${Object.values(item)}`;
         inactiveLayers.push(name);
       }
-
       removeLayers(inactiveLayers);
     }
   });
@@ -480,9 +481,9 @@ import { point } from "@turf/turf";
       let searchParams = new URLSearchParams(document.location.search);
       let key = searchParams.get("id");
 
-      if (window.utils.savedPoints.length !== 0) {
-        console.log('We have points previously saved');
-
+      // check if we already have saved points
+      if (window.utils.savedPoints !== null) {
+        // console.log('We have points previously saved');
         const savePoints = JSON.parse(window.utils.savedPoints);
         savePoints.forEach((savedpoint)=>{
           window.utils.tempDB.push(savedpoint);
