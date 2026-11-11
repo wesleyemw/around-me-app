@@ -15,7 +15,7 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
-    "@andreasnicolaou/overpass-client": "^1.2.0",
+    "@andreasnicolaou/overpass-client": "^2.0.0",
     "@biomejs/biome": "2.4.4",
     "maplibre-gl-style-flipper": "^1.0.9",
     "vite": "^7.1.7"
@@ -24,9 +24,5 @@
     "@turf/turf": "^7.3.4",
     "inter-ui": "^4.1.1",
     "maplibre-gl": "^5.7.0"
-  },
-  "engines": {
-    "npm": ">=10.0.0 <11.4.2",
-    "node": "^22.16.0"
   }
 }
